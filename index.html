@@ -84,9 +84,9 @@
     flex: 1;
     background: none;
     border: none;
-    padding: 10px 4px 12px;
+    padding: 10px 2px 12px;
     font-family: 'Inter', sans-serif;
-    font-size: 10px;
+    font-size: 9px;
     color: var(--muted);
     cursor: pointer;
     display: flex;
@@ -95,7 +95,7 @@
     gap: 2px;
     transition: color 0.15s;
   }
-  nav.bottom-nav button .icon { font-size: 17px; }
+  nav.bottom-nav button .icon { font-size: 16px; }
   nav.bottom-nav button.active { color: var(--text); font-weight: 500; }
 
   .card {
@@ -850,6 +850,67 @@
     color: #333;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   }
+
+  /* ── RACE DAY MODE ── */
+  .race-day-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .race-day-badge.practice   { background: #e8f0fe; color: #1967d2; }
+  .race-day-badge.qualifying { background: #fff3e0; color: #e65100; }
+  .race-day-badge.raceday    { background: #1a1a1a; color: #fff; }
+
+  /* ── SESSION COUNTDOWN ── */
+  #session-cd {
+    background: #f8f6f2;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    display: none;
+    align-items: center;
+    gap: 12px;
+  }
+  #session-cd.visible { display: flex; }
+  .scd-left { flex: 1; }
+  .scd-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .scd-digits { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); letter-spacing: -0.5px; }
+  .scd-name { font-size: 11px; color: var(--accent); margin-top: 2px; }
+  .scd-live-badge { background: #e53935; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; white-space: nowrap; animation: pulse-live 1.2s ease-in-out infinite; }
+  @keyframes pulse-live { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+
+  /* ── ALL-RACE WEATHER ── */
+  .aw-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .aw-card h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
+  .aw-race { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0ede8; }
+  .aw-race:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .aw-race-name { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .aw-days { display: flex; gap: 4px; }
+  .aw-day { flex: 1; text-align: center; background: #f8f6f2; border-radius: 6px; padding: 6px 2px; }
+  .aw-day-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .aw-day-icon { font-size: 18px; line-height: 1; margin-bottom: 2px; }
+  .aw-day-temp { font-size: 11px; font-weight: 600; }
+  .aw-day-rain { font-size: 10px; color: var(--muted); }
+  .aw-na { font-size: 11px; color: var(--muted); font-style: italic; padding: 4px 0; }
+
+  /* ── PLANNER TAB ── */
+  .pack-cat-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; margin-top: 4px; }
+  .pack-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0ede8; cursor: pointer; user-select: none; }
+  .pack-item:last-child { border-bottom: none; }
+  .pack-item input[type=checkbox] { width: 18px; height: 18px; accent-color: #1a1a1a; cursor: pointer; flex-shrink: 0; }
+  .pack-item-label { font-size: 13px; flex: 1; transition: color 0.15s; }
+  .pack-item.checked .pack-item-label { text-decoration: line-through; color: var(--muted); }
+  .pack-reset-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 11px; cursor: pointer; color: var(--accent); font-family: 'Inter', sans-serif; }
+  .notes-wkd-select { width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px; margin-bottom: 10px; background: #fff; }
+  .notes-textarea { width: 100%; min-height: 150px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.6; resize: vertical; background: #fff; }
+  .notes-textarea:focus { outline: none; border-color: #1a1a1a; }
+  .notes-saved { font-size: 11px; color: #4caf50; margin-top: 5px; opacity: 0; transition: opacity 0.4s; height: 16px; }
+  .notes-saved.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -870,15 +931,23 @@
 
   <!-- TODAY CARD (only on race weekend days) -->
   <div id="heute-card" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
       <div>
         <div id="heute-title" style="font-size:15px;font-weight:600;"></div>
         <div id="heute-sub" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+        <div id="race-day-badge"></div>
       </div>
       <div id="heute-live" style="display:none;background:#1a1a1a;color:#fff;font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;letter-spacing:0.5px;">LIVE</div>
     </div>
+    <div id="session-cd">
+      <div class="scd-left">
+        <div class="scd-label" id="scd-label">Next Supercup session</div>
+        <div class="scd-digits" id="scd-digits">00:00:00</div>
+        <div class="scd-name" id="scd-name"></div>
+      </div>
+    </div>
     <div id="heute-sessions"></div>
-    <div id="heute-next" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--accent);"></div>
+    <div id="heute-next" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--accent);display:none;"></div>
   </div>
 
   <!-- COUNTDOWN + WEATHER -->
@@ -897,6 +966,12 @@
     <div id="weather-container">
       <div class="weather-loading" id="weather-loading">Loading weather…</div>
     </div>
+  </div>
+
+  <!-- ALL-RACE WEATHER -->
+  <div class="aw-card" id="all-weather-card">
+    <h2>☀️ Race Weather</h2>
+    <div id="all-weather-body"><div style="font-size:12px;color:var(--muted);">Loading weather…</div></div>
   </div>
 
   <!-- RENNKALENDER -->
@@ -1648,6 +1723,34 @@
 
 </section>
 
+<!-- ═══════════════ TAB 6: PLANNER ═══════════════ -->
+<section id="tab-planner" class="tab-content">
+
+  <!-- PACKING LIST -->
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h2 style="margin:0;">🎒 Packing List</h2>
+      <button class="pack-reset-btn" onclick="resetPacking()">Reset all</button>
+    </div>
+    <div id="pack-list"></div>
+  </div>
+
+  <!-- PERSONAL NOTES -->
+  <div class="card">
+    <h2>📝 My Notes</h2>
+    <select class="notes-wkd-select" id="notes-wkd-select" onchange="switchNotesWeekend(this.value)">
+      <option value="barcelona">🇪🇸 Barcelona</option>
+      <option value="spielberg">🇦🇹 Spielberg</option>
+      <option value="budapest">🇭🇺 Budapest</option>
+      <option value="zandvoort">🇳🇱 Zandvoort</option>
+      <option value="monza">🇮🇹 Monza</option>
+    </select>
+    <textarea class="notes-textarea" id="notes-textarea" placeholder="Notes, ideas, things to remember…" oninput="saveNote()"></textarea>
+    <div class="notes-saved" id="notes-saved">✓ Saved</div>
+  </div>
+
+</section>
+
 <!-- ═══════════════ BOTTOM NAV ═══════════════ -->
 <nav class="bottom-nav">
   <button onclick="showTab('saison')" id="nav-saison" class="active">
@@ -1664,6 +1767,9 @@
   </button>
   <button onclick="showTab('ergebnisse')" id="nav-ergebnisse">
     <span class="icon">📊</span><span>Results</span>
+  </button>
+  <button onclick="showTab('planner')" id="nav-planner">
+    <span class="icon">📋</span><span>Planner</span>
   </button>
 </nav>
 
@@ -1855,8 +1961,21 @@ function renderHeute() {
   document.getElementById('heute-title').textContent = prog.weekend;
   document.getElementById('heute-sub').textContent = prog.day + ' · Your Porsche Programme';
 
+  // Race Day badge
+  const supercupSessions = prog.sessions.filter(s => s.type === 'supercup');
+  const badgeEl = document.getElementById('race-day-badge');
+  if (supercupSessions.length > 0) {
+    const lbl = supercupSessions[0].label.toLowerCase();
+    let cls, text;
+    if (lbl.includes('rennen')) { cls = 'raceday'; text = '🏆 Race Day'; }
+    else if (lbl.includes('qualifying')) { cls = 'qualifying'; text = '🎯 Qualifying Day'; }
+    else { cls = 'practice'; text = '🔧 Practice Day'; }
+    badgeEl.innerHTML = `<span class="race-day-badge ${cls}">${text}</span>`;
+  } else {
+    badgeEl.innerHTML = '';
+  }
+
   const now = nowMins();
-  let nextSession = null;
   let anyRunning = false;
 
   const html = prog.sessions.map(s => {
@@ -1872,7 +1991,6 @@ function renderHeute() {
     ].filter(Boolean).join(' ');
 
     if (running) anyRunning = true;
-    if (!past && !running && !nextSession) nextSession = s;
 
     return `<div class="${cls}">
       <div class="hs-time">${s.time}</div>
@@ -1884,17 +2002,51 @@ function renderHeute() {
 
   document.getElementById('heute-sessions').innerHTML = html;
   document.getElementById('heute-live').style.display = anyRunning ? 'block' : 'none';
+}
 
-  const nextEl = document.getElementById('heute-next');
-  if (nextSession) {
-    const diff = timeToMins(nextSession.time) - now;
-    const h = Math.floor(diff/60), m = diff%60;
-    const when = h > 0 ? `${h}h ${m}min` : `${m} Min`;
-    nextEl.textContent = `⏱ Next session: ${nextSession.label} – in ${when}`;
-    nextEl.style.display = 'block';
-  } else {
-    nextEl.style.display = 'none';
+// ── SESSION COUNTDOWN (runs every second) ──
+function renderSessionCountdown() {
+  const key = todayKey();
+  const prog = HEUTE_PROGRAM[key];
+  const cdEl = document.getElementById('session-cd');
+  if (!prog) { cdEl.classList.remove('visible'); return; }
+
+  // Only show countdown for Supercup Qualifying or Race
+  const targetSessions = prog.sessions.filter(s =>
+    s.type === 'supercup' && (s.label.toLowerCase().includes('qualifying') || s.label.toLowerCase().includes('rennen'))
+  );
+  if (targetSessions.length === 0) { cdEl.classList.remove('visible'); return; }
+
+  const now = new Date();
+  const nowSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+  // Check if any target session is currently running
+  for (const s of targetSessions) {
+    const startSec = timeToMins(s.time) * 60;
+    const endSec   = timeToMins(s.end) * 60;
+    if (nowSecs >= startSec && nowSecs < endSec) {
+      cdEl.classList.add('visible');
+      document.getElementById('scd-label').textContent = 'Session live now';
+      document.getElementById('scd-digits').innerHTML = '<span class="scd-live-badge">🔴 LIVE</span>';
+      document.getElementById('scd-name').textContent = s.label;
+      return;
+    }
   }
+
+  // Find next upcoming target session
+  const next = targetSessions.find(s => timeToMins(s.time) * 60 > nowSecs);
+  if (!next) { cdEl.classList.remove('visible'); return; }
+
+  const diffSec = timeToMins(next.time) * 60 - nowSecs;
+  const hh = Math.floor(diffSec / 3600);
+  const mm = Math.floor((diffSec % 3600) / 60);
+  const ss = diffSec % 60;
+  const fmt = n => String(n).padStart(2, '0');
+
+  cdEl.classList.add('visible');
+  document.getElementById('scd-label').textContent = 'Next Supercup session in';
+  document.getElementById('scd-digits').textContent = `${fmt(hh)}:${fmt(mm)}:${fmt(ss)}`;
+  document.getElementById('scd-name').textContent = next.label + ' · starts ' + next.time;
 }
 
 // ── LEAFLET MAP ──
@@ -2019,8 +2171,8 @@ async function loadWeather() {
 
   const raceDay = new Date(next.raceDate);
   const startDate = new Date(raceDay);
-  startDate.setDate(startDate.getDate() - 2); // Fr
-  const endDate = new Date(raceDay); // So (race day)
+  startDate.setDate(startDate.getDate() - 2);
+  const endDate = new Date(raceDay);
 
   const fmt = d => d.toISOString().split('T')[0];
 
@@ -2032,7 +2184,7 @@ async function loadWeather() {
     const res = await fetch(url);
     const data = await res.json();
     const days = data.daily;
-    const labels = ['Fr', 'Sa', 'So'];
+    const labels = ['Fri', 'Sat', 'Sun'];
 
     const html = `
       <div class="weather-row">
@@ -2051,6 +2203,76 @@ async function loadWeather() {
   } catch {
     document.getElementById('weather-loading').textContent = 'Weather unavailable.';
   }
+}
+
+// ── ALL-RACE WEATHER (Race Weather card on Season tab) ──
+async function loadWeatherAll() {
+  const fmt = d => d.toISOString().split('T')[0];
+  const now = Date.now();
+  const MAX_FORECAST_DAYS = 16;
+  const attended = races.filter(r => r.weekend && ATTENDED_WKNDS.has(r.weekend));
+
+  const fetches = attended.map(async r => {
+    const raceDay = new Date(r.raceDate);
+    const daysUntil = Math.ceil((raceDay - now) / 86400000);
+    const isPast = raceDay.getTime() < now - 86400000;
+
+    if (isPast) {
+      return { race: r, status: 'past' };
+    }
+    if (daysUntil > MAX_FORECAST_DAYS + 2) {
+      const availFrom = new Date(now);
+      availFrom.setDate(availFrom.getDate() + (daysUntil - MAX_FORECAST_DAYS));
+      return { race: r, status: 'early', availFrom };
+    }
+
+    const startDate = new Date(raceDay);
+    startDate.setDate(startDate.getDate() - 2);
+    const endDate = new Date(raceDay);
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${r.lat}&longitude=${r.lon}`
+      + `&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max`
+      + `&timezone=auto&start_date=${fmt(startDate)}&end_date=${fmt(endDate)}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return { race: r, status: 'ok', daily: data.daily };
+    } catch {
+      return { race: r, status: 'error' };
+    }
+  });
+
+  const results = await Promise.all(fetches);
+  const labels = ['Fri', 'Sat', 'Sun'];
+
+  const html = results.map(({ race: r, status, daily, availFrom }) => {
+    let content;
+    if (status === 'past') {
+      content = `<div class="aw-na">Race completed</div>`;
+    } else if (status === 'early') {
+      const mo = availFrom.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+      content = `<div class="aw-na">Forecast available from ~${mo}</div>`;
+    } else if (status === 'error') {
+      content = `<div class="aw-na">Weather unavailable</div>`;
+    } else {
+      content = `<div class="aw-days">
+        ${daily.time.map((_, i) => `
+          <div class="aw-day">
+            <div class="aw-day-label">${labels[i] || daily.time[i].slice(5)}</div>
+            <div class="aw-day-icon">${wmoIcon(daily.weathercode[i])}</div>
+            <div class="aw-day-temp">${Math.round(daily.temperature_2m_max[i])}°/${Math.round(daily.temperature_2m_min[i])}°</div>
+            <div class="aw-day-rain">💧${daily.precipitation_probability_max[i]}%</div>
+          </div>`).join('')}
+      </div>`;
+    }
+
+    const raceDate = new Date(r.raceDate).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+    return `<div class="aw-race">
+      <div class="aw-race-name">${r.flag} ${r.name} <span style="font-weight:400;color:var(--muted);font-size:11px;">${raceDate}</span></div>
+      ${content}
+    </div>`;
+  }).join('');
+
+  document.getElementById('all-weather-body').innerHTML = html || '<div class="aw-na">No data</div>';
 }
 
 // ── STANDINGS ──
@@ -2310,16 +2532,96 @@ function closeGridPicker() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGridPicker(); });
 
+// ── PACKING LIST ──
+const PACK_CATEGORIES = [
+  { title: '🪪 Documents', items: ['Passport / ID', 'Tickets (race + hospitality)', 'Hotel booking', 'Travel insurance', 'Driver licence', 'Credit card / cash'] },
+  { title: '👗 Outfit', items: ['Porsche fan outfit', 'Rain jacket', 'Comfortable shoes', 'Sunglasses', 'Sunscreen', 'Cap / hat'] },
+  { title: '📱 Tech', items: ['Phone + charger', 'Power bank', 'Camera / GoPro', 'Earbuds / earplugs', 'Travel adapter'] },
+  { title: '🎒 Essentials', items: ['Medication', 'Water bottle', 'Snacks', 'Hand sanitiser', 'Small backpack'] },
+  { title: '🏎 Fan Extras', items: ['Flag or banner', 'Autograph cards', 'Race programme', 'Souvenir budget 😄'] },
+];
+const PACK_LS_KEY = 'supercup2026_packing';
+
+function loadPacking() {
+  try { return JSON.parse(localStorage.getItem(PACK_LS_KEY)) || {}; } catch { return {}; }
+}
+function savePacking(data) { localStorage.setItem(PACK_LS_KEY, JSON.stringify(data)); }
+
+function renderPacking() {
+  const data = loadPacking();
+  const html = PACK_CATEGORIES.map(cat => {
+    const items = cat.items.map(item => {
+      const id = 'pack_' + item.replace(/\W+/g, '_');
+      const checked = !!data[id];
+      return `<label class="pack-item${checked ? ' checked' : ''}">
+        <input type="checkbox" onchange="togglePacking('${id}',this)" ${checked ? 'checked' : ''}>
+        <span class="pack-item-label">${item}</span>
+      </label>`;
+    }).join('');
+    return `<div class="pack-cat-title">${cat.title}</div>${items}`;
+  }).join('');
+  document.getElementById('pack-list').innerHTML = html;
+}
+
+function togglePacking(id, cb) {
+  const data = loadPacking();
+  if (cb.checked) data[id] = 1; else delete data[id];
+  savePacking(data);
+  cb.closest('.pack-item').classList.toggle('checked', cb.checked);
+}
+
+function resetPacking() {
+  if (!confirm('Reset packing list?')) return;
+  localStorage.removeItem(PACK_LS_KEY);
+  renderPacking();
+}
+
+// ── PERSONAL NOTES ──
+let currentNotesWkd = 'barcelona';
+
+function loadNote(wid) {
+  return localStorage.getItem('supercup2026_notes_' + wid) || '';
+}
+function saveNote() {
+  const wid = currentNotesWkd;
+  const val = document.getElementById('notes-textarea').value;
+  localStorage.setItem('supercup2026_notes_' + wid, val);
+  const saved = document.getElementById('notes-saved');
+  saved.classList.add('show');
+  clearTimeout(saved._t);
+  saved._t = setTimeout(() => saved.classList.remove('show'), 1500);
+}
+function switchNotesWeekend(wid) {
+  currentNotesWkd = wid;
+  document.getElementById('notes-textarea').value = loadNote(wid);
+}
+function initNotes() {
+  // Pre-select next attended race
+  const now = Date.now();
+  const attended = races.filter(r => r.weekend && ATTENDED_WKNDS.has(r.weekend));
+  const next = attended.find(r => new Date(r.raceDate).getTime() > now) || attended[attended.length - 1];
+  if (next && next.weekend) {
+    currentNotesWkd = next.weekend;
+    document.getElementById('notes-wkd-select').value = next.weekend;
+  }
+  document.getElementById('notes-textarea').value = loadNote(currentNotesWkd);
+}
+
 // ── INIT ──
 renderHeute();
 setInterval(renderHeute, 60000);
+renderSessionCountdown();
+setInterval(renderSessionCountdown, 1000);
 buildMap();
 updateCountdown();
 setInterval(updateCountdown, 1000);
 loadWeather();
+loadWeatherAll();
 renderStandings();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
+renderPacking();
+initNotes();
 
 // Default weekend = next attended race
 (function() {
