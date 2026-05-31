@@ -32,15 +32,42 @@
   }
 
   header {
-    padding: 16px 16px 12px;
     border-bottom: 1px solid var(--border);
     background: var(--bg);
     position: sticky;
     top: 0;
     z-index: 10;
+    overflow: hidden;
   }
-  header h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
-  header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .header-car {
+    position: relative;
+    height: 110px;
+    overflow: hidden;
+  }
+  .header-car img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    display: block;
+  }
+  .header-car-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(248,246,242,0.85) 0%, rgba(248,246,242,0.3) 60%, transparent 100%);
+  }
+  .header-car-text {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .header-car-text h1 { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
+  .header-car-text p { font-size: 12px; color: var(--accent); margin-top: 2px; }
+  @media (min-width: 480px) {
+    .header-car { height: 140px; }
+    .header-car-text h1 { font-size: 18px; }
+  }
 
   .tab-content { display: none; padding: 16px; }
   .tab-content.active { display: block; }
@@ -84,12 +111,25 @@
 
   /* ── COUNTDOWN ── */
   .countdown-card {
-    background: #1a1a1a;
     color: #fff;
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.4s;
   }
+  .countdown-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0.78);
+    z-index: 0;
+  }
+  .countdown-card > * { position: relative; z-index: 1; }
   .countdown-label { font-size: 11px; color: #888; margin-bottom: 4px; }
   .countdown-race { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
   .countdown-digits {
@@ -489,6 +529,181 @@
     .drivers-grid { grid-template-columns: 1fr 1fr 1fr; }
   }
 
+  /* ── HEUTE CARD ── */
+  .hs-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    transition: opacity 0.2s;
+  }
+  .hs-row:last-child { border-bottom: none; }
+  .hs-row.past { opacity: 0.35; }
+  .hs-row.running {
+    background: #f8f6f2;
+    margin: 0 -16px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border-bottom: none;
+  }
+  .hs-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 50px;
+    white-space: nowrap;
+  }
+  .hs-row.running .hs-time { color: var(--text); }
+  .hs-icon { font-size: 15px; }
+  .hs-label { font-size: 13px; flex: 1; }
+  .hs-row.supercup .hs-label { font-weight: 600; }
+  .hs-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 2px 6px;
+    border-radius: 99px;
+    background: #1a1a1a;
+    color: #fff;
+  }
+
+  /* ── STARTGITTER ── */
+  .grid-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+  .grid-card h2 { font-size:14px; font-weight:600; margin-bottom:4px; }
+  .grid-meta { font-size:11px; color:var(--muted); margin-bottom:14px; }
+
+  .grid-edit-btn {
+    float: right;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    color: var(--accent);
+  }
+  .grid-edit-btn:hover { background: #f5f5f5; }
+
+  /* The grid itself: 2 columns */
+  .startgitter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  /* Odd positions left column, even right — real grid layout */
+
+  .grid-slot {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.1s;
+    min-height: 52px;
+    position: relative;
+  }
+  .grid-slot:hover { background: #fafafa; }
+  .grid-slot.clrt-slot { border-color: #1a1a1a; border-width: 2px; }
+  .grid-slot.empty { border-style: dashed; border-color: #e0e0e0; }
+  .grid-slot.pole { border-color: #c9a84c; border-width: 2px; }
+
+  .gs-pos {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e0e0e0;
+    min-width: 28px;
+    text-align: center;
+    line-height: 1;
+  }
+  .grid-slot.pole .gs-pos { color: #c9a84c; }
+  .grid-slot.clrt-slot .gs-pos { color: #1a1a1a; }
+
+  .gs-photo {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    object-fit: cover; object-position: top;
+    flex-shrink: 0;
+  }
+  .gs-initials {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    background: #eee;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    flex-shrink: 0;
+  }
+  .gs-info { flex: 1; min-width: 0; }
+  .gs-num { font-size: 10px; color: var(--muted); }
+  .gs-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gs-team { font-size: 10px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gs-empty-label { font-size: 12px; color: #ccc; }
+
+  .pole-label {
+    position: absolute;
+    top: 6px; right: 8px;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.8px;
+    color: #c9a84c;
+  }
+
+  /* Grid picker modal */
+  #grid-picker {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.5);
+    align-items: flex-end;
+    justify-content: center;
+  }
+  #grid-picker.open { display: flex; }
+  #grid-picker-inner {
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 0 0 24px;
+    animation: slide-up 0.2s ease;
+  }
+  @keyframes slide-up {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .gp-header {
+    padding: 16px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0;
+    background: #fff;
+    z-index: 1;
+  }
+  .gp-header h3 { font-size: 14px; font-weight: 600; }
+  .gp-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+  .gp-clear { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; color: var(--accent); font-family: 'Inter', sans-serif; }
+  .gp-driver {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .gp-driver:hover { background: #fafafa; }
+  .gp-driver img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; object-position: top; }
+  .gp-driver-info .gp-num { font-size: 10px; color: var(--muted); }
+  .gp-driver-info .gp-name { font-size: 13px; font-weight: 500; }
+  .gp-driver-info .gp-team { font-size: 11px; color: var(--muted); }
+  .gp-assigned { margin-left: auto; font-size: 10px; color: #bbb; }
+
   /* ── LIGHTBOX ── */
   .driver-photo { cursor: zoom-in; }
 
@@ -557,12 +772,31 @@
 <body>
 
 <header>
-  <h1>Porsche Mobil 1 Supercup 2026</h1>
-  <p>34. Saison · 911 Cup 992.2</p>
+  <div class="header-car">
+    <img src="img/CLRT_car_11_barcelona.jfif" alt="Schumacher CLRT #11">
+    <div class="header-car-overlay"></div>
+    <div class="header-car-text">
+      <h1>Porsche Mobil 1 Supercup 2026</h1>
+      <p>34. Saison · 911 Cup 992.2</p>
+    </div>
+  </div>
 </header>
 
 <!-- ═══════════════ TAB 1: SAISON ═══════════════ -->
 <section id="tab-saison" class="tab-content active">
+
+  <!-- HEUTE CARD (only on race weekend days) -->
+  <div id="heute-card" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div>
+        <div id="heute-title" style="font-size:15px;font-weight:600;"></div>
+        <div id="heute-sub" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+      </div>
+      <div id="heute-live" style="display:none;background:#1a1a1a;color:#fff;font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;letter-spacing:0.5px;">LIVE</div>
+    </div>
+    <div id="heute-sessions"></div>
+    <div id="heute-next" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--accent);"></div>
+  </div>
 
   <!-- COUNTDOWN + WEATHER -->
   <div class="countdown-card">
@@ -773,6 +1007,7 @@
         <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (66 Runden)</div></div></div>
       </div>
     </div>
+    <div id="grid-barcelona" class="grid-card"></div>
   </div>
 
   <!-- SPIELBERG -->
@@ -826,6 +1061,7 @@
         <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (71 Runden)</div></div></div>
       </div>
     </div>
+    <div id="grid-spielberg" class="grid-card"></div>
   </div>
   <div id="ws-budapest" class="weekend-section">
     <div class="weekend-header">
@@ -840,6 +1076,7 @@
     </div>
     <div class="coming-soon">📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt</div>
     <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">Details folgen.</p></div>
+    <div id="grid-budapest" class="grid-card"></div>
   </div>
 
   <div id="ws-zandvoort" class="weekend-section">
@@ -858,6 +1095,7 @@
     </div>
     <div class="coming-soon">📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt</div>
     <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">Details folgen.</p></div>
+    <div id="grid-zandvoort" class="grid-card"></div>
   </div>
 
   <!-- MONZA -->
@@ -954,6 +1192,7 @@
         </div></div>
       </div>
     </div>
+    <div id="grid-monza" class="grid-card"></div>
   </div>
 
 </section>
@@ -1168,6 +1407,16 @@
 <!-- ═══════════════ TAB 4: ERGEBNISSE ═══════════════ -->
 <section id="tab-ergebnisse" class="tab-content">
 
+  <div style="border-radius:12px;overflow:hidden;margin-bottom:12px;position:relative;">
+    <img src="img/CLRT_team_champions_2025.avif" alt="Schumacher CLRT – Team Champions 2025"
+         style="width:100%;max-height:220px;object-fit:cover;object-position:center 20%;display:block;">
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;
+                background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);">
+      <div style="color:#fff;font-size:13px;font-weight:600;">Schumacher CLRT</div>
+      <div style="color:rgba(255,255,255,0.75);font-size:11px;">Driver · Team · Rookie Champion 2025</div>
+    </div>
+  </div>
+
   <div class="card">
     <h2>WM-Wertung 2026</h2>
     <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Punkte nach jedem Rennen eintragen – werden lokal gespeichert. Zelle antippen zum Bearbeiten.</p>
@@ -1228,6 +1477,20 @@
   </button>
 </nav>
 
+<!-- GRID PICKER -->
+<div id="grid-picker" onclick="if(event.target===this)closeGridPicker()">
+  <div id="grid-picker-inner">
+    <div class="gp-header">
+      <h3 id="gp-pos-label">Fahrer wählen</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="gp-clear" onclick="clearGridSlot(gridPickerCtx.wid, gridPickerCtx.pos)">Löschen</button>
+        <button class="gp-close" onclick="closeGridPicker()">✕</button>
+      </div>
+    </div>
+    <div id="gp-driver-list"></div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox(event)">
   <div id="lightbox-inner">
@@ -1275,14 +1538,141 @@ function showDayCtx(prefix, name) {
 
 // ── RACE DATA ──
 const races = [
-  { id: 'monaco',    name: 'Monaco',    flag: '🇲🇨', raceDate: '2026-06-07T11:45:00', lat: 43.7384, lon: 7.4246,  weekend: 'monaco' },
-  { id: 'barcelona', name: 'Barcelona', flag: '🇪🇸', raceDate: '2026-06-14T11:45:00', lat: 41.57,   lon: 2.26,   weekend: 'barcelona' },
-  { id: 'spielberg', name: 'Spielberg', flag: '🇦🇹', raceDate: '2026-06-28T11:45:00', lat: 47.22,   lon: 14.76,  weekend: 'spielberg' },
-  { id: 'spa',       name: 'Spa',       flag: '🇧🇪', raceDate: '2026-07-19T11:45:00', lat: 50.44,   lon: 5.97,   weekend: null },
-  { id: 'budapest',  name: 'Budapest',  flag: '🇭🇺', raceDate: '2026-07-26T11:45:00', lat: 47.58,   lon: 19.25,  weekend: 'budapest' },
-  { id: 'zandvoort', name: 'Zandvoort', flag: '🇳🇱', raceDate: '2026-08-23T11:45:00', lat: 52.39,   lon: 4.54,   weekend: 'zandvoort' },
-  { id: 'monza',     name: 'Monza',     flag: '🇮🇹', raceDate: '2026-09-07T11:45:00', lat: 45.62,   lon: 9.29,   weekend: 'monza' },
+  { id: 'monaco',    name: 'Monaco',    flag: '🇲🇨', raceDate: '2026-06-07T11:45:00', lat: 43.7384, lon: 7.4246,  weekend: 'monaco',    track: 'img/2026trackmontecarlodetailed.avif' },
+  { id: 'barcelona', name: 'Barcelona', flag: '🇪🇸', raceDate: '2026-06-14T11:45:00', lat: 41.57,   lon: 2.26,   weekend: 'barcelona', track: 'img/2026trackcatalunyadetailed.avif' },
+  { id: 'spielberg', name: 'Spielberg', flag: '🇦🇹', raceDate: '2026-06-28T11:45:00', lat: 47.22,   lon: 14.76,  weekend: 'spielberg', track: 'img/2026trackspielbergdetailed.avif' },
+  { id: 'spa',       name: 'Spa',       flag: '🇧🇪', raceDate: '2026-07-19T11:45:00', lat: 50.44,   lon: 5.97,   weekend: null,        track: 'img/2026trackspafrancorchampsdetailed.avif' },
+  { id: 'budapest',  name: 'Budapest',  flag: '🇭🇺', raceDate: '2026-07-26T11:45:00', lat: 47.58,   lon: 19.25,  weekend: 'budapest',  track: 'img/2026trackhungaroringdetailed.avif' },
+  { id: 'zandvoort', name: 'Zandvoort', flag: '🇳🇱', raceDate: '2026-08-23T11:45:00', lat: 52.39,   lon: 4.54,   weekend: 'zandvoort', track: 'img/2026trackzandvoortdetailed.avif' },
+  { id: 'monza',     name: 'Monza',     flag: '🇮🇹', raceDate: '2026-09-07T11:45:00', lat: 45.62,   lon: 9.29,   weekend: 'monza',     track: 'img/2026trackmonzadetailed.avif' },
 ];
+
+// ── HEUTE / LIVE DAY PROGRAM ──
+const HEUTE_PROGRAM = {
+  // MONACO
+  '2026-06-04': { weekend: '🇲🇨 Monaco', day: 'Donnerstag', sessions: [
+    { time:'16:30', end:'17:15', label:'Supercup Training', type:'supercup' },
+  ]},
+  '2026-06-05': { weekend: '🇲🇨 Monaco', day: 'Freitag', sessions: [
+    { time:'18:45', end:'19:15', label:'Supercup Qualifying', type:'supercup' },
+  ]},
+  '2026-06-07': { weekend: '🇲🇨 Monaco', day: 'Sonntag – Renntag', sessions: [
+    { time:'11:45', end:'12:20', label:'Supercup Rennen', type:'supercup' },
+  ]},
+  // BARCELONA
+  '2026-06-12': { weekend: '🇪🇸 Barcelona', day: 'Freitag', sessions: [
+    { time:'18:30', end:'19:15', label:'Supercup Training', type:'supercup' },
+  ]},
+  '2026-06-13': { weekend: '🇪🇸 Barcelona', day: 'Samstag', sessions: [
+    { time:'11:20', end:'11:50', label:'Supercup Qualifying', type:'supercup' },
+  ]},
+  '2026-06-14': { weekend: '🇪🇸 Barcelona', day: 'Sonntag – Renntag', sessions: [
+    { time:'10:10', end:'10:45', label:'Supercup Rennen', type:'supercup' },
+  ]},
+  // SPIELBERG
+  '2026-06-26': { weekend: '🇦🇹 Spielberg', day: 'Freitag', sessions: [
+    { time:'18:35', end:'19:20', label:'Supercup Training', type:'supercup' },
+  ]},
+  '2026-06-27': { weekend: '🇦🇹 Spielberg', day: 'Samstag', sessions: [
+    { time:'11:20', end:'11:50', label:'Supercup Qualifying', type:'supercup' },
+  ]},
+  '2026-06-28': { weekend: '🇦🇹 Spielberg', day: 'Sonntag – Renntag', sessions: [
+    { time:'11:55', end:'12:30', label:'Supercup Rennen', type:'supercup' },
+  ]},
+  // MONZA
+  '2026-09-04': { weekend: '🇮🇹 Monza', day: 'Donnerstag', sessions: [
+    { time:'13:00', end:'14:30', label:'Mittagessen (auf Anfrage)', type:'hosp' },
+    { time:'18:00', end:'18:00', label:'Team Managers Meeting', type:'info' },
+    { time:'18:30', end:'20:00', label:'Abendessen (auf Anfrage)', type:'hosp' },
+  ]},
+  '2026-09-05': { weekend: '🇮🇹 Monza', day: 'Freitag', sessions: [
+    { time:'08:30', end:'09:15', label:'Frühstück Slot 1 (CLRT)', type:'hosp' },
+    { time:'12:00', end:'13:00', label:'Mittagessen Slot 1 (CLRT)', type:'hosp' },
+    { time:'18:30', end:'19:15', label:'Supercup Training', type:'supercup' },
+    { time:'19:30', end:'20:30', label:'Dinner Slot 1 (CLRT)', type:'hosp' },
+  ]},
+  '2026-09-06': { weekend: '🇮🇹 Monza', day: 'Samstag', sessions: [
+    { time:'08:00', end:'08:45', label:'Frühstück Slot 1 (CLRT)', type:'hosp' },
+    { time:'10:35', end:'11:05', label:'Supercup Qualifying', type:'supercup' },
+    { time:'11:30', end:'12:30', label:'Mittagessen Slot 1 (CLRT)', type:'hosp' },
+    { time:'18:00', end:'19:00', label:'Dinner Slot 1 (CLRT)', type:'hosp' },
+  ]},
+  '2026-09-07': { weekend: '🇮🇹 Monza', day: 'Sonntag – Renntag', sessions: [
+    { time:'08:30', end:'09:15', label:'Frühstück Slot 1 (CLRT)', type:'hosp' },
+    { time:'11:45', end:'12:20', label:'Supercup Rennen', type:'supercup' },
+    { time:'12:30', end:'13:30', label:'Mittagessen Slot 1 (CLRT)', type:'hosp' },
+    { time:'19:30', end:'21:30', label:'Get Together – Ristorante Del Centro', type:'info' },
+  ]},
+};
+
+const TYPE_ICON = { supercup:'🏎', hosp:'🍽', info:'ℹ️' };
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function timeToMins(t) {
+  const [h,m] = t.split(':').map(Number);
+  return h*60+m;
+}
+
+function nowMins() {
+  const n = new Date();
+  return n.getHours()*60+n.getMinutes();
+}
+
+function renderHeute() {
+  const key = todayKey();
+  const prog = HEUTE_PROGRAM[key];
+  const card = document.getElementById('heute-card');
+  if (!prog) { card.style.display = 'none'; return; }
+
+  card.style.display = 'block';
+  document.getElementById('heute-title').textContent = prog.weekend;
+  document.getElementById('heute-sub').textContent = prog.day + ' · Euer Porsche-Programm';
+
+  const now = nowMins();
+  let nextSession = null;
+  let anyRunning = false;
+
+  const html = prog.sessions.map(s => {
+    const start = timeToMins(s.time);
+    const end   = timeToMins(s.end);
+    const running = now >= start && now < end;
+    const past    = now >= end;
+    const cls = [
+      'hs-row',
+      s.type,
+      running ? 'running' : '',
+      past    ? 'past'    : ''
+    ].filter(Boolean).join(' ');
+
+    if (running) anyRunning = true;
+    if (!past && !running && !nextSession) nextSession = s;
+
+    return `<div class="${cls}">
+      <div class="hs-time">${s.time}</div>
+      <div class="hs-icon">${TYPE_ICON[s.type]||'•'}</div>
+      <div class="hs-label">${s.label}</div>
+      ${running ? '<div class="hs-badge">JETZT</div>' : ''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('heute-sessions').innerHTML = html;
+  document.getElementById('heute-live').style.display = anyRunning ? 'block' : 'none';
+
+  const nextEl = document.getElementById('heute-next');
+  if (nextSession) {
+    const diff = timeToMins(nextSession.time) - now;
+    const h = Math.floor(diff/60), m = diff%60;
+    const when = h > 0 ? `${h}h ${m}min` : `${m} Min`;
+    nextEl.textContent = `⏱ Nächste Session: ${nextSession.label} – in ${when}`;
+    nextEl.style.display = 'block';
+  } else {
+    nextEl.style.display = 'none';
+  }
+}
 
 // ── LEAFLET MAP ──
 function buildMap() {
@@ -1365,6 +1755,12 @@ function getNextRace() {
 
 function updateCountdown() {
   const next = getNextRace();
+  // Set track background once
+  const card = document.querySelector('.countdown-card');
+  if (next && card && !card.dataset.trackSet) {
+    card.style.backgroundImage = `url('${next.track}')`;
+    card.dataset.trackSet = '1';
+  }
   if (!next) {
     document.getElementById('cd-race-name').textContent = 'Saison 2026 beendet';
     document.getElementById('cd-digits').innerHTML = '<div class="countdown-done">Bis zum nächsten Jahr! 🏆</div>';
@@ -1549,13 +1945,158 @@ function photoClick(img) {
 }
 function initPhotoClicks() {}
 
+// ── STARTGITTER ──
+const DRIVER_PHOTOS = {
+  1:  'img/Robert_de_Haan_BWT_Lechner_Racing_bvjgro.avif',
+  2:  'img/Marcus_Amand_BWT_Lechner_Racing_jzzlln.avif',
+  3:  'img/Caleb_Sumich_BWT_Lechner_Racing_nzpq8r.avif',
+  4:  'img/Kaegan_Masters_Proton_Competition_ijrztw.avif',
+  5:  'img/Kai_Pfister_Proton_Competition_ukemst.avif',
+  7:  'img/Andrea_Bristot_Dinamic_Motorsport_SRL_byxvla.avif',
+  8:  'img/William_Mezzetti_Dinamic_Motorsport_xt8wi3.avif',
+  11: 'img/Chester_Kieffer_Schumacher_CLRT_xmyylw.avif',
+  12: 'img/Flynt_Schuring_Schumacher_CLRT_i8h1ti.avif',
+  13: 'img/Jorge_E.avif',
+  14: 'img/Juan_Pablo_Vega_Dieppa_RGB_Racing_Team_dzka4a.avif',
+  15: 'img/Theo_Oeverhaus_Martinet_by_Almeras_dd4w1u.avif',
+  16: 'img/Paul_Cauhaupe_Martinet_by_Almeras_kkhm7k.avif',
+  17: 'img/Jaap_van_Lagen_Martinet_by_Almeras_kv4qcn.avif',
+  18: 'img/Liam_McNeilly_Ombra_Racing_hdynzi.avif',
+  19: 'img/Luciano_Facundo_Martinez_Ombra_Racing_ezwshd.avif',
+  20: 'img/Filip_Ugran_Ombra_Racing_mv6xqc.avif',
+  22: 'img/Dirk_Schouten_Looping_by_CarTech_igrxrd.avif',
+  23: 'img/Samer_Shahin_GP_Elite_jdhooy.avif',
+  24: 'img/Jonas_GreifGP_Elite_eefri2.avif',
+  25: 'img/Wouter_Boerekamps_Team_GP_Elite_xuxoip.avif',
+  26: 'img/Gustav_Burton_Team_GP_Elite_c3o4rr.avif',
+  27: 'img/Matheus_Ferreira_Team_GP_Elite_v36vnp.avif',
+  28: 'img/Aldo_Festante_Target_SRL_jgauie.avif',
+  29: 'img/Jack_Young_Target_SRL_dfp4nz.avif',
+};
+const GRID_SLOTS = 25;
+let gridPickerCtx = { wid: null, pos: null };
+
+function loadGrid(wid) {
+  try { return JSON.parse(localStorage.getItem('supercup2026_grid_' + wid)) || {}; } catch { return {}; }
+}
+function saveGrid(wid, data) {
+  localStorage.setItem('supercup2026_grid_' + wid, JSON.stringify(data));
+}
+
+function initials(name) {
+  return name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 3);
+}
+
+function renderGrid(wid) {
+  const container = document.getElementById('grid-' + wid);
+  if (!container) return;
+  const data = loadGrid(wid);
+
+  let slots = '';
+  for (let pos = 1; pos <= GRID_SLOTS; pos++) {
+    const driverNum = data[pos];
+    const driver = driverNum ? DRIVERS.find(d => d.num === Number(driverNum)) : null;
+    const isPole = pos === 1;
+    const isCLRT = driver && driver.clrt;
+
+    let cls = 'grid-slot';
+    if (isPole) cls += ' pole';
+    if (isCLRT) cls += ' clrt-slot';
+    if (!driver) cls += ' empty';
+
+    const photo = driver ? DRIVER_PHOTOS[driver.num] : null;
+    const avatarHtml = driver
+      ? (photo
+          ? `<img class="gs-photo" src="${photo}" alt="${driver.name}" onerror="this.outerHTML='<div class=\\'gs-initials\\'>${initials(driver.name)}</div>'">`
+          : `<div class="gs-initials">${initials(driver.name)}</div>`)
+      : '';
+    const infoHtml = driver
+      ? `<div class="gs-info"><div class="gs-num">#${driver.num}</div><div class="gs-name">${driver.name}</div><div class="gs-team">${driver.team}</div></div>`
+      : `<div class="gs-empty-label">P${pos} – antippen</div>`;
+
+    slots += `<div class="${cls}" data-pos="${pos}" onclick="openGridPicker('${wid}',${pos})">
+      <div class="gs-pos">${pos}</div>
+      ${avatarHtml}
+      ${infoHtml}
+      ${isPole ? '<div class="pole-label">POLE</div>' : ''}
+    </div>`;
+  }
+
+  container.innerHTML = `
+    <h2>Startaufstellung <button class="grid-edit-btn" onclick="event.stopPropagation();clearGrid('${wid}')">Zurücksetzen</button></h2>
+    <div class="grid-meta">Startplatz antippen → Fahrer zuweisen · wird lokal gespeichert</div>
+    <div class="startgitter">${slots}</div>`;
+}
+
+function openGridPicker(wid, pos) {
+  gridPickerCtx = { wid, pos };
+  const data = loadGrid(wid);
+  const assigned = new Set(Object.entries(data).filter(([p]) => Number(p) !== pos).map(([,n]) => Number(n)));
+  const current = data[pos] ? Number(data[pos]) : null;
+
+  document.getElementById('gp-pos-label').textContent = `Position ${pos}${pos === 1 ? ' – Pole Position' : ''}`;
+
+  document.getElementById('gp-driver-list').innerHTML = DRIVERS.map(d => {
+    const photo = DRIVER_PHOTOS[d.num];
+    const taken = assigned.has(d.num);
+    const isCurrent = d.num === current;
+    const avatarHtml = photo
+      ? `<img src="${photo}" alt="${d.name}" onerror="this.style.display='none'">`
+      : `<div style="width:40px;height:40px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#888">${initials(d.name)}</div>`;
+    return `<div class="gp-driver${isCurrent ? ' gp-current' : ''}" style="${taken ? 'opacity:0.4;' : ''}" onclick="assignToGrid('${wid}',${pos},${d.num})">
+      ${avatarHtml}
+      <div class="gp-driver-info">
+        <div class="gp-num">#${d.num}</div>
+        <div class="gp-name">${d.name}</div>
+        <div class="gp-team">${d.team}</div>
+      </div>
+      ${isCurrent ? '<div class="gp-assigned">✓ gesetzt</div>' : taken ? '<div class="gp-assigned">vergeben</div>' : ''}
+    </div>`;
+  }).join('');
+
+  document.getElementById('grid-picker').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function assignToGrid(wid, pos, driverNum) {
+  const data = loadGrid(wid);
+  for (const p in data) { if (Number(data[p]) === driverNum) delete data[p]; }
+  data[pos] = driverNum;
+  saveGrid(wid, data);
+  closeGridPicker();
+  renderGrid(wid);
+}
+
+function clearGridSlot(wid, pos) {
+  const data = loadGrid(wid);
+  delete data[pos];
+  saveGrid(wid, data);
+  closeGridPicker();
+  renderGrid(wid);
+}
+
+function clearGrid(wid) {
+  if (!confirm('Startaufstellung für dieses Wochenende löschen?')) return;
+  localStorage.removeItem('supercup2026_grid_' + wid);
+  renderGrid(wid);
+}
+
+function closeGridPicker() {
+  document.getElementById('grid-picker').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGridPicker(); });
+
 // ── INIT ──
+renderHeute();
+setInterval(renderHeute, 60000);
 buildMap();
 updateCountdown();
 setInterval(updateCountdown, 1000);
 loadWeather();
 renderStandings();
 initPhotoClicks();
+['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
 </script>
 </body>
 </html>
