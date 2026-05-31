@@ -69,34 +69,14 @@
     .header-car-text h1 { font-size: 18px; }
   }
 
-  /* ── DESKTOP LAYOUT: centred app shell ── */
+  /* ── DESKTOP LAYOUT ── */
   @media (min-width: 600px) {
-    body { background: #d8d5cf; padding-bottom: 80px; }
-    header {
-      max-width: 560px;
-      margin: 16px auto 0;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-      overflow: hidden;
-      position: relative; /* override sticky so it doesn't bleed full-width */
-    }
-    header .header-car { height: 180px; }
+    header .header-car { height: 160px; }
     header .header-car-text h1 { font-size: 20px; }
     .tab-content {
-      max-width: 560px;
+      max-width: 680px;
       margin-left: auto;
       margin-right: auto;
-    }
-    nav.bottom-nav {
-      width: 560px;
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%);
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
     }
   }
 
