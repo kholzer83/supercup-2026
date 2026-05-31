@@ -704,6 +704,89 @@
   .gp-driver-info .gp-team { font-size: 11px; color: var(--muted); }
   .gp-assigned { margin-left: auto; font-size: 10px; color: #bbb; }
 
+  /* ── ATTENDED WEEKEND PILLS ── */
+  .weekend-pills button.attended {
+    border-color: #c9a84c;
+    color: #1a1a1a;
+  }
+  .weekend-pills button.attended.active {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #fff;
+  }
+
+  /* ── WEEKENDS FILTER BAR ── */
+  .wkd-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .wkd-filter-bar span { font-size: 12px; color: var(--muted); }
+  .filter-toggle-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 4px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s;
+  }
+  .filter-toggle-btn.active {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #fff;
+  }
+
+  /* ── HIGHLIGHTS FILTER ── */
+  .highlights-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .highlights-bar span { font-size: 11px; color: var(--muted); }
+  .card.highlights-only .tl-item.bg { display: none; }
+
+  /* ── HOSPITALITY TAB ── */
+  .hosp-section { display: none; }
+  .hosp-section.active { display: block; }
+  .hosp-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .hosp-info-item { font-size: 12px; }
+  .hosp-info-item .hi-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .hosp-info-item .hi-val { font-weight: 500; }
+  .hosp-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .hosp-slot-row:last-child { border-bottom: none; }
+  .hosp-slot-day { font-size: 11px; color: var(--muted); min-width: 44px; }
+  .hosp-slot-time { font-size: 12px; font-weight: 600; min-width: 80px; }
+  .hosp-slot-label { font-size: 12px; flex: 1; }
+  .hosp-note-box {
+    background: #f8f6f2;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--accent);
+    margin-top: 10px;
+  }
+
   /* ── LIGHTBOX ── */
   .driver-photo { cursor: zoom-in; }
 
@@ -777,7 +860,7 @@
     <div class="header-car-overlay"></div>
     <div class="header-car-text">
       <h1>Porsche Mobil 1 Supercup 2026</h1>
-      <p>34. Saison · 911 Cup 992.2</p>
+      <p>34th Season · 911 Cup 992.2</p>
     </div>
   </div>
 </header>
@@ -785,7 +868,7 @@
 <!-- ═══════════════ TAB 1: SAISON ═══════════════ -->
 <section id="tab-saison" class="tab-content active">
 
-  <!-- HEUTE CARD (only on race weekend days) -->
+  <!-- TODAY CARD (only on race weekend days) -->
   <div id="heute-card" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
       <div>
@@ -800,56 +883,56 @@
 
   <!-- COUNTDOWN + WEATHER -->
   <div class="countdown-card">
-    <div class="countdown-label">Nächstes Rennen</div>
+    <div class="countdown-label">Next Race</div>
     <div class="countdown-race" id="cd-race-name">–</div>
     <div class="countdown-digits" id="cd-digits">
-      <div class="cd-block"><div class="cd-num" id="cd-d">–</div><div class="cd-unit">Tage</div></div>
+      <div class="cd-block"><div class="cd-num" id="cd-d">–</div><div class="cd-unit">Days</div></div>
       <div class="cd-sep">:</div>
-      <div class="cd-block"><div class="cd-num" id="cd-h">–</div><div class="cd-unit">Std</div></div>
+      <div class="cd-block"><div class="cd-num" id="cd-h">–</div><div class="cd-unit">Hrs</div></div>
       <div class="cd-sep">:</div>
       <div class="cd-block"><div class="cd-num" id="cd-m">–</div><div class="cd-unit">Min</div></div>
       <div class="cd-sep">:</div>
-      <div class="cd-block"><div class="cd-num" id="cd-s">–</div><div class="cd-unit">Sek</div></div>
+      <div class="cd-block"><div class="cd-num" id="cd-s">–</div><div class="cd-unit">Sec</div></div>
     </div>
     <div id="weather-container">
-      <div class="weather-loading" id="weather-loading">Wetter wird geladen…</div>
+      <div class="weather-loading" id="weather-loading">Loading weather…</div>
     </div>
   </div>
 
   <!-- ROUTE MAP -->
   <div class="map-card">
-    <h2>Saisonroute 2026</h2>
+    <h2>2026 Season Route</h2>
     <div id="race-map"></div>
-    <p style="font-size:10px;color:var(--muted);margin-top:8px;">Rennort antippen → Wochenend-Details öffnen · Karte: Leaflet + CartoDB</p>
+    <p style="font-size:10px;color:var(--muted);margin-top:8px;">Tap a venue → open weekend details · Map: Leaflet + CartoDB</p>
   </div>
 
   <!-- SAISONÜBERSICHT -->
   <div class="card">
-    <h2>Saisonübersicht</h2>
+    <h2>Season Overview</h2>
     <div class="specs-grid">
-      <div class="spec-item"><div class="label">Saison</div><div class="value">34. Auflage</div></div>
-      <div class="spec-item"><div class="label">Fahrzeug</div><div class="value">911 Cup (992.2)</div></div>
-      <div class="spec-item"><div class="label">Fahrer</div><div class="value">28</div></div>
+      <div class="spec-item"><div class="label">Season</div><div class="value">34th edition</div></div>
+      <div class="spec-item"><div class="label">Car</div><div class="value">911 Cup (992.2)</div></div>
+      <div class="spec-item"><div class="label">Drivers</div><div class="value">28</div></div>
       <div class="spec-item"><div class="label">Teams</div><div class="value">10</div></div>
-      <div class="spec-item"><div class="label">Nationen</div><div class="value">16</div></div>
-      <div class="spec-item"><div class="label">Rennen</div><div class="value">8</div></div>
+      <div class="spec-item"><div class="label">Nations</div><div class="value">16</div></div>
+      <div class="spec-item"><div class="label">Races</div><div class="value">8</div></div>
     </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:10px;">Neues Auto: 911 Cup (992.2) – erstmals im Einsatz 2026</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px;">New car: 911 Cup (992.2) – first season in 2026</p>
   </div>
 
   <!-- RENNKALENDER -->
   <div class="card">
-    <h2>Rennkalender</h2>
+    <h2>Race Calendar</h2>
     <table>
-      <thead><tr><th></th><th>Datum</th><th>Strecke</th></tr></thead>
+      <thead><tr><th></th><th>Date</th><th>Venue</th></tr></thead>
       <tbody>
         <tr><td class="race-num">R1</td><td class="race-date">04–06.06.</td><td>🇲🇨 Monaco</td></tr>
-        <tr><td class="race-num">R2</td><td class="race-date">12–14.06.</td><td>🇪🇸 Barcelona <span class="pill dabei">dabei</span></td></tr>
-        <tr><td class="race-num">R3</td><td class="race-date">26–28.06.</td><td>🇦🇹 Spielberg <span class="pill dabei">dabei</span></td></tr>
+        <tr><td class="race-num">R2</td><td class="race-date">12–14.06.</td><td>🇪🇸 Barcelona <span class="pill dabei">★ joining</span></td></tr>
+        <tr><td class="race-num">R3</td><td class="race-date">26–28.06.</td><td>🇦🇹 Spielberg <span class="pill dabei">★ joining</span></td></tr>
         <tr><td class="race-num">R4</td><td class="race-date">17–19.07.</td><td>🇧🇪 Spa</td></tr>
-        <tr><td class="race-num">R5</td><td class="race-date">24–26.07.</td><td>🇭🇺 Budapest <span class="pill dabei">dabei</span></td></tr>
-        <tr><td class="race-num">R6+7</td><td class="race-date">21–23.08.</td><td>🇳🇱 Zandvoort <span class="pill dabei">dabei</span> <span class="pill double">Double</span><br><span style="font-size:10px;color:var(--muted);">Letztes Supercup-Gastspiel</span></td></tr>
-        <tr><td class="race-num">R8</td><td class="race-date">04–06.09.</td><td>🇮🇹 Monza <span class="pill dabei">dabei</span> <span class="pill" style="border-color:#999;">Finale</span></td></tr>
+        <tr><td class="race-num">R5</td><td class="race-date">24–26.07.</td><td>🇭🇺 Budapest <span class="pill dabei">★ joining</span></td></tr>
+        <tr><td class="race-num">R6+7</td><td class="race-date">21–23.08.</td><td>🇳🇱 Zandvoort <span class="pill dabei">★ joining</span> <span class="pill double">Double</span><br><span style="font-size:10px;color:var(--muted);">Last Supercup guest appearance</span></td></tr>
+        <tr><td class="race-num">R8</td><td class="race-date">04–06.09.</td><td>🇮🇹 Monza <span class="pill dabei">★ joining</span> <span class="pill" style="border-color:#999;">Finale</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -858,19 +941,19 @@
   <div class="card">
     <h2>911 Cup (992.2) – Specs</h2>
     <div class="specs-grid">
-      <div class="spec-item"><div class="label">Motor</div><div class="value">4,0 L Boxer-6</div></div>
-      <div class="spec-item"><div class="label">Leistung</div><div class="value">520 PS</div></div>
-      <div class="spec-item"><div class="label">Gewicht</div><div class="value">1.288 kg</div></div>
-      <div class="spec-item"><div class="label">Antrieb</div><div class="value">Hinterrad</div></div>
-      <div class="spec-item"><div class="label">Getriebe</div><div class="value">6-Gang Klaue</div></div>
-      <div class="spec-item"><div class="label">Reifen</div><div class="value">Michelin (25. J.)</div></div>
-      <div class="spec-item" style="grid-column:1/-1"><div class="label">Preis</div><div class="value">269.000 € zzgl. MwSt.</div></div>
+      <div class="spec-item"><div class="label">Engine</div><div class="value">4.0 L Flat-6</div></div>
+      <div class="spec-item"><div class="label">Power</div><div class="value">520 hp</div></div>
+      <div class="spec-item"><div class="label">Weight</div><div class="value">1,288 kg</div></div>
+      <div class="spec-item"><div class="label">Drive</div><div class="value">Rear-wheel</div></div>
+      <div class="spec-item"><div class="label">Gearbox</div><div class="value">6-speed dog-box</div></div>
+      <div class="spec-item"><div class="label">Tyres</div><div class="value">Michelin (25th yr.)</div></div>
+      <div class="spec-item" style="grid-column:1/-1"><div class="label">Price</div><div class="value">€ 269,000 excl. VAT</div></div>
     </div>
   </div>
 
   <!-- PUNKTESYSTEM -->
   <div class="card">
-    <h2>Punktesystem</h2>
+    <h2>Points System</h2>
     <div class="points-row">
       <div class="point-pill"><span>25</span>P1</div>
       <div class="point-pill"><span>20</span>P2</div>
@@ -895,13 +978,17 @@
 <!-- ═══════════════ TAB 2: WOCHENENDEN ═══════════════ -->
 <section id="tab-wochenenden" class="tab-content">
 
+  <div class="wkd-filter-bar">
+    <span>Race weekends</span>
+    <button class="filter-toggle-btn" id="btn-our-races" onclick="toggleOurRaces()">★ Our Races only</button>
+  </div>
   <div class="weekend-pills">
     <button onclick="showWeekend('monaco')" id="wp-monaco">Monaco</button>
-    <button onclick="showWeekend('barcelona')" id="wp-barcelona">Barcelona</button>
-    <button onclick="showWeekend('spielberg')" id="wp-spielberg">Spielberg</button>
-    <button onclick="showWeekend('budapest')" id="wp-budapest">Budapest</button>
-    <button onclick="showWeekend('zandvoort')" id="wp-zandvoort">Zandvoort</button>
-    <button onclick="showWeekend('monza')" id="wp-monza" class="active">Monza</button>
+    <button onclick="showWeekend('barcelona')" id="wp-barcelona" class="attended">Barcelona</button>
+    <button onclick="showWeekend('spielberg')" id="wp-spielberg" class="attended">Spielberg</button>
+    <button onclick="showWeekend('budapest')" id="wp-budapest" class="attended">Budapest</button>
+    <button onclick="showWeekend('zandvoort')" id="wp-zandvoort" class="attended">Zandvoort</button>
+    <button onclick="showWeekend('monza')" id="wp-monza" class="attended active">Monza</button>
   </div>
 
   <!-- MONACO -->
@@ -911,48 +998,48 @@
         <img src="img/2026trackmontecarlodetailed.avif" alt="Monaco Circuit">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 1 · 04–07. Juni 2026</div>
+        <div class="wh-round">Round 1 · 04–07 June 2026</div>
         <div class="wh-name">🇲🇨 Monaco</div>
         <div class="wh-meta">
           <span>Circuit de Monaco</span>
-          <span>78 Runden</span>
+          <span>78 laps</span>
           <span>UTC+2</span>
         </div>
       </div>
     </div>
-    <div class="card">
-      <h2>Tagesablauf</h2>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Alle Zeiten Lokalzeit (UTC+2)</p>
+    <div class="card" id="sched-monaco">
+      <h2>Schedule <button class="filter-toggle-btn" style="float:right;margin-top:-2px;" onclick="toggleHighlights('sched-monaco',this)">🎯 Highlights</button></h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">All times local (UTC+2)</p>
       <div class="day-tabs">
-        <button onclick="showDayCtx('mc','do')" id="mcdt-do" class="active">Do</button>
-        <button onclick="showDayCtx('mc','fr')" id="mcdt-fr">Fr</button>
-        <button onclick="showDayCtx('mc','sa')" id="mcdt-sa">Sa</button>
-        <button onclick="showDayCtx('mc','so')" id="mcdt-so">So</button>
+        <button onclick="showDayCtx('mc','do')" id="mcdt-do" class="active">Thu</button>
+        <button onclick="showDayCtx('mc','fr')" id="mcdt-fr">Fri</button>
+        <button onclick="showDayCtx('mc','sa')" id="mcdt-sa">Sat</button>
+        <button onclick="showDayCtx('mc','so')" id="mcdt-so">Sun</button>
       </div>
       <div id="mcday-do" class="day-content active">
-        <div class="tl-item logistics"><div class="tl-time">13:25–14:10</div><div><div class="tl-label">F3 Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:00–15:45</div><div><div class="tl-label">F2 Training</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">16:30–17:15</div><div><div class="tl-label">SUPERCUP TRAINING</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:25–14:10</div><div><div class="tl-label">F3 Practice</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:00–15:45</div><div><div class="tl-label">F2 Practice</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">16:30–17:15</div><div><div class="tl-label">SUPERCUP PRACTICE</div></div></div>
       </div>
       <div id="mcday-fr" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">11:05–11:45</div><div><div class="tl-label">F3 Qualifying (Gruppe A + B)</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – 1. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:10–15:50</div><div><div class="tl-label">F2 Qualifying (Gruppe A + B)</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – 2. Training</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">11:05–11:45</div><div><div class="tl-label">F3 Qualifying (Group A + B)</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – Practice 1</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:10–15:50</div><div><div class="tl-label">F2 Qualifying (Group A + B)</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – Practice 2</div></div></div>
         <div class="tl-item supercup"><div class="tl-time">18:45–19:15</div><div><div class="tl-label">SUPERCUP QUALIFYING</div></div></div>
       </div>
       <div id="mcday-sa" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">10:45–11:30</div><div><div class="tl-label">F3 Sprint Race</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – 3. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint Race</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">10:45–11:30</div><div><div class="tl-label">F3 Sprint Race</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – Practice 3</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint Race</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying 🎯</div></div></div>
       </div>
       <div id="mcday-so" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">07:45–08:35</div><div><div class="tl-label">F3 Feature Race</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">09:25–10:30</div><div><div class="tl-label">F2 Feature Race</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">11:45–12:20</div><div><div class="tl-label">SUPERCUP RENNEN (15 Runden / 30 Min + 1)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Fahrerparade</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (78 Runden)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">07:45–08:35</div><div><div class="tl-label">F3 Feature Race</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">09:25–10:30</div><div><div class="tl-label">F2 Feature Race</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">11:45–12:20</div><div><div class="tl-label">SUPERCUP RACE (15 laps / 30 min + 1)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Drivers' Parade</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (78 laps) 🎯</div></div></div>
       </div>
     </div>
   </div>
@@ -964,47 +1051,47 @@
         <img src="img/2026trackcatalunyadetailed.avif" alt="Barcelona Circuit">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 2 · 12–14. Juni 2026</div>
-        <div class="wh-name">🇪🇸 Barcelona<span class="wh-dabei">dabei</span></div>
+        <div class="wh-round">Round 2 · 12–14 June 2026</div>
+        <div class="wh-name">🇪🇸 Barcelona<span class="wh-dabei">★ joining</span></div>
         <div class="wh-meta">
           <span>Circuit de Barcelona-Catalunya</span>
-          <span>66 Runden</span>
+          <span>66 laps</span>
         </div>
       </div>
     </div>
     <div class="card clrt">
       <h2>Schumacher CLRT – Hospitality</h2>
-      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+      <p style="color:var(--muted);font-size:12px;">See Hospitality tab for full details.</p>
     </div>
-    <div class="card">
-      <h2>Tagesablauf</h2>
+    <div class="card" id="sched-barcelona">
+      <h2>Schedule <button class="filter-toggle-btn" style="float:right;margin-top:-2px;" onclick="toggleHighlights('sched-barcelona',this)">🎯 Highlights</button></h2>
       <div class="day-tabs" id="bdt">
-        <button onclick="showDayCtx('b','fr')" id="bdt-fr" class="active">Fr</button>
-        <button onclick="showDayCtx('b','sa')" id="bdt-sa">Sa</button>
-        <button onclick="showDayCtx('b','so')" id="bdt-so">So</button>
+        <button onclick="showDayCtx('b','fr')" id="bdt-fr" class="active">Fri</button>
+        <button onclick="showDayCtx('b','sa')" id="bdt-sa">Sat</button>
+        <button onclick="showDayCtx('b','so')" id="bdt-so">Sun</button>
       </div>
       <div id="bday-fr" class="day-content active">
-        <div class="tl-item logistics"><div class="tl-time">09:55–10:40</div><div><div class="tl-label">F3 Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">11:05–11:50</div><div><div class="tl-label">F2 Training</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – 1. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:00–15:30</div><div><div class="tl-label">F3 Qualifying</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:55–16:25</div><div><div class="tl-label">F2 Qualifying</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – 2. Training</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">18:30–19:15</div><div><div class="tl-label">SUPERCUP TRAINING</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">09:55–10:40</div><div><div class="tl-label">F3 Practice</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">11:05–11:50</div><div><div class="tl-label">F2 Practice</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – Practice 1</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:00–15:30</div><div><div class="tl-label">F3 Qualifying</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:55–16:25</div><div><div class="tl-label">F2 Qualifying</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – Practice 2</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">18:30–19:15</div><div><div class="tl-label">SUPERCUP PRACTICE</div></div></div>
       </div>
       <div id="bday-sa" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">10:05–10:50</div><div><div class="tl-label">F3 Sprint (21 Runden)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">10:05–10:50</div><div><div class="tl-label">F3 Sprint (21 laps)</div></div></div>
         <div class="tl-item supercup"><div class="tl-time">11:20–11:50</div><div><div class="tl-label">SUPERCUP QUALIFYING</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – 3. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint (26 Runden)</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – Practice 3</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint (26 laps)</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying 🎯</div></div></div>
       </div>
       <div id="bday-so" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">08:40–09:30</div><div><div class="tl-label">F3 Feature Race (25 Runden)</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">10:10–10:45</div><div><div class="tl-label">SUPERCUP RENNEN (16 Runden / 30 Min)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">11:25–12:30</div><div><div class="tl-label">F2 Feature Race (37 Runden)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Fahrerparade</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (66 Runden)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">08:40–09:30</div><div><div class="tl-label">F3 Feature Race (25 laps)</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">10:10–10:45</div><div><div class="tl-label">SUPERCUP RACE (16 laps / 30 min)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">11:25–12:30</div><div><div class="tl-label">F2 Feature Race (37 laps)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Drivers' Parade</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (66 laps) 🎯</div></div></div>
       </div>
     </div>
     <div id="grid-barcelona" class="grid-card"></div>
@@ -1017,48 +1104,48 @@
         <img src="img/2026trackspielbergdetailed.avif" alt="Red Bull Ring">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 3 · 26–28. Juni 2026</div>
-        <div class="wh-name">🇦🇹 Spielberg<span class="wh-dabei">dabei</span></div>
+        <div class="wh-round">Round 3 · 26–28 June 2026</div>
+        <div class="wh-name">🇦🇹 Spielberg<span class="wh-dabei">★ joining</span></div>
         <div class="wh-meta">
           <span>Red Bull Ring</span>
-          <span>71 Runden</span>
+          <span>71 laps</span>
         </div>
       </div>
     </div>
     <div class="card clrt">
       <h2>Schumacher CLRT – Hospitality</h2>
-      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+      <p style="color:var(--muted);font-size:12px;">See Hospitality tab for full details.</p>
     </div>
-    <div class="card">
-      <h2>Tagesablauf</h2>
+    <div class="card" id="sched-spielberg">
+      <h2>Schedule <button class="filter-toggle-btn" style="float:right;margin-top:-2px;" onclick="toggleHighlights('sched-spielberg',this)">🎯 Highlights</button></h2>
       <div class="day-tabs">
-        <button onclick="showDayCtx('s','fr')" id="sdt-fr" class="active">Fr</button>
-        <button onclick="showDayCtx('s','sa')" id="sdt-sa">Sa</button>
-        <button onclick="showDayCtx('s','so')" id="sdt-so">So</button>
+        <button onclick="showDayCtx('s','fr')" id="sdt-fr" class="active">Fri</button>
+        <button onclick="showDayCtx('s','sa')" id="sdt-sa">Sat</button>
+        <button onclick="showDayCtx('s','so')" id="sdt-so">Sun</button>
       </div>
       <div id="sday-fr" class="day-content active">
-        <div class="tl-item logistics"><div class="tl-time">09:55–10:40</div><div><div class="tl-label">F3 Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">11:05–11:50</div><div><div class="tl-label">F2 Training</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – 1. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:00–15:30</div><div><div class="tl-label">F3 Qualifying</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:55–16:25</div><div><div class="tl-label">F2 Qualifying</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – 2. Training</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">18:35–19:20</div><div><div class="tl-label">SUPERCUP TRAINING</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">09:55–10:40</div><div><div class="tl-label">F3 Practice</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">11:05–11:50</div><div><div class="tl-label">F2 Practice</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – Practice 1</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:00–15:30</div><div><div class="tl-label">F3 Qualifying</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:55–16:25</div><div><div class="tl-label">F2 Qualifying</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – Practice 2</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">18:35–19:20</div><div><div class="tl-label">SUPERCUP PRACTICE</div></div></div>
       </div>
       <div id="sday-sa" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">10:05–10:50</div><div><div class="tl-label">F3 Sprint (21 Runden)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">10:05–10:50</div><div><div class="tl-label">F3 Sprint (21 laps)</div></div></div>
         <div class="tl-item supercup"><div class="tl-time">11:20–11:50</div><div><div class="tl-label">SUPERCUP QUALIFYING</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">11:55–12:05</div><div><div class="tl-label">Red Bull Drift Show</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – 3. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint (28 Runden)</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">11:55–12:05</div><div><div class="tl-label">Red Bull Drift Show</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – Practice 3</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">14:15–15:05</div><div><div class="tl-label">F2 Sprint (28 laps)</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying 🎯</div></div></div>
       </div>
       <div id="sday-so" class="day-content">
-        <div class="tl-item logistics"><div class="tl-time">08:40–09:30</div><div><div class="tl-label">F3 Feature Race (26 Runden)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">10:10–11:15</div><div><div class="tl-label">F2 Feature Race (40 Runden)</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">11:55–12:30</div><div><div class="tl-label">SUPERCUP RENNEN (18 Runden / 30 Min)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Fahrerparade</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (71 Runden)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">08:40–09:30</div><div><div class="tl-label">F3 Feature Race (26 laps)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">10:10–11:15</div><div><div class="tl-label">F2 Feature Race (40 laps)</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">11:55–12:30</div><div><div class="tl-label">SUPERCUP RACE (18 laps / 30 min)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:00–13:30</div><div><div class="tl-label">F1 Drivers' Parade</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX (71 laps) 🎯</div></div></div>
       </div>
     </div>
     <div id="grid-spielberg" class="grid-card"></div>
@@ -1069,13 +1156,13 @@
         <img src="img/2026trackhungaroringdetailed.avif" alt="Hungaroring">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 5 · 24–26. Juli 2026</div>
-        <div class="wh-name">🇭🇺 Budapest<span class="wh-dabei">dabei</span></div>
+        <div class="wh-round">Round 5 · 24–26 July 2026</div>
+        <div class="wh-name">🇭🇺 Budapest<span class="wh-dabei">★ joining</span></div>
         <div class="wh-meta"><span>Hungaroring</span></div>
       </div>
     </div>
-    <div class="coming-soon">📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt</div>
-    <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">Details folgen.</p></div>
+    <div class="coming-soon">📅 Schedule to follow –<br>added approx. Thu before race day</div>
+    <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">See Hospitality tab for details.</p></div>
     <div id="grid-budapest" class="grid-card"></div>
   </div>
 
@@ -1085,16 +1172,16 @@
         <img src="img/2026trackzandvoortdetailed.avif" alt="Zandvoort">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 6+7 · 21–23. August 2026</div>
-        <div class="wh-name">🇳🇱 Zandvoort<span class="wh-dabei">dabei</span></div>
+        <div class="wh-round">Round 6+7 · 21–23 August 2026</div>
+        <div class="wh-name">🇳🇱 Zandvoort<span class="wh-dabei">★ joining</span></div>
         <div class="wh-meta">
           <span>Circuit Zandvoort</span>
-          <span>Double-Header · Letztes Supercup-Gastspiel</span>
+          <span>Double-Header · Last Supercup guest appearance</span>
         </div>
       </div>
     </div>
-    <div class="coming-soon">📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt</div>
-    <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">Details folgen.</p></div>
+    <div class="coming-soon">📅 Schedule to follow –<br>added approx. Thu before race day</div>
+    <div class="card clrt"><h2>Schumacher CLRT – Hospitality</h2><p style="color:var(--muted);font-size:12px;">See Hospitality tab for details.</p></div>
     <div id="grid-zandvoort" class="grid-card"></div>
   </div>
 
@@ -1105,11 +1192,11 @@
         <img src="img/2026trackmonzadetailed.avif" alt="Monza">
       </div>
       <div class="wh-info">
-        <div class="wh-round">Runde 8 · Saisonfinale · 04–07. September 2026</div>
-        <div class="wh-name">🇮🇹 Monza<span class="wh-dabei">dabei</span></div>
+        <div class="wh-round">Round 8 · Season Finale · 04–07 September 2026</div>
+        <div class="wh-name">🇮🇹 Monza<span class="wh-dabei">★ joining</span></div>
         <div class="wh-meta">
           <span>Autodromo Nazionale Monza</span>
-          <span>15 Runden Supercup</span>
+          <span>15 laps Supercup</span>
         </div>
       </div>
     </div>
@@ -1117,75 +1204,75 @@
       <h2>Schumacher CLRT – Hospitality Slots</h2>
       <table class="hosp-table">
         <tbody>
-          <tr><td>Fr 05.09</td><td>Frühstück</td><td>08:30–09:15</td></tr>
-          <tr><td>Fr 05.09</td><td>Mittagessen</td><td>12:00–13:00</td></tr>
-          <tr><td>Fr 05.09</td><td>Dinner</td><td>19:30–20:30</td></tr>
-          <tr><td>Sa 06.09</td><td>Frühstück</td><td>08:00–08:45</td></tr>
-          <tr><td>Sa 06.09</td><td>Mittagessen</td><td>11:30–12:30</td></tr>
-          <tr><td>Sa 06.09</td><td>Dinner</td><td>18:00–19:00</td></tr>
-          <tr><td>So 07.09</td><td>Frühstück</td><td>08:30–09:15</td></tr>
-          <tr><td>So 07.09</td><td>Mittagessen</td><td>12:30–13:30</td></tr>
+          <tr><td>Fri 05.09</td><td>Breakfast</td><td>08:30–09:15</td></tr>
+          <tr><td>Fri 05.09</td><td>Lunch</td><td>12:00–13:00</td></tr>
+          <tr><td>Fri 05.09</td><td>Dinner</td><td>19:30–20:30</td></tr>
+          <tr><td>Sat 06.09</td><td>Breakfast</td><td>08:00–08:45</td></tr>
+          <tr><td>Sat 06.09</td><td>Lunch</td><td>11:30–12:30</td></tr>
+          <tr><td>Sat 06.09</td><td>Dinner</td><td>18:00–19:00</td></tr>
+          <tr><td>Sun 07.09</td><td>Breakfast</td><td>08:30–09:15</td></tr>
+          <tr><td>Sun 07.09</td><td>Lunch</td><td>12:30–13:30</td></tr>
         </tbody>
       </table>
       <div class="hosp-note">
-        Slot 1 – auch: BWT Lechner, Proton Huber, Hadeca, Martinet<br>
-        Slot 2 (jeweils ~1h später): GP Elite, Dinamic, Target, Ombra
+        Slot 1 – also: BWT Lechner, Proton Huber, Hadeca, Martinet<br>
+        Slot 2 (approx. 1h later): GP Elite, Dinamic, Target, Ombra
       </div>
     </div>
 
-    <div class="card">
-      <h2>Tagesablauf Monza</h2>
+    <div class="card" id="sched-monza">
+      <h2>Schedule <button class="filter-toggle-btn" style="float:right;margin-top:-2px;" onclick="toggleHighlights('sched-monza',this)">🎯 Highlights</button></h2>
       <div class="day-tabs">
-        <button onclick="showDay('do')" id="dt-do" class="active">Do</button>
-        <button onclick="showDay('fr')" id="dt-fr">Fr</button>
-        <button onclick="showDay('sa')" id="dt-sa">Sa</button>
-        <button onclick="showDay('so')" id="dt-so">So</button>
+        <button onclick="showDay('do')" id="dt-do" class="active">Thu</button>
+        <button onclick="showDay('fr')" id="dt-fr">Fri</button>
+        <button onclick="showDay('sa')" id="dt-sa">Sat</button>
+        <button onclick="showDay('so')" id="dt-so">Sun</button>
       </div>
 
       <div id="day-do" class="day-content active">
-        <div class="tl-item logistics"><div class="tl-time">08:00</div><div><div class="tl-label">Paddock Entry &amp; Set-up</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">09:00–11:45</div><div><div class="tl-label">Track Walk möglich</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">13:00</div><div><div class="tl-label">Technische Abnahme</div></div></div>
-        <div class="tl-item hospitality"><div class="tl-time">13:00–14:30</div><div><div class="tl-label">🍽 Mittagessen (auf Anfrage)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">18:00</div><div><div class="tl-label">Team Managers' Meeting</div></div></div>
-        <div class="tl-item hospitality"><div class="tl-time">18:30–20:00</div><div><div class="tl-label">🍽 Abendessen (auf Anfrage)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">08:00</div><div><div class="tl-label">Paddock Entry &amp; Set-up</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">09:00–11:45</div><div><div class="tl-label">Track walk possible</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:00</div><div><div class="tl-label">Technical scrutineering</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">13:00–14:30</div><div><div class="tl-label">🍽 Lunch (on request)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">18:00</div><div><div class="tl-label">Team Managers' Meeting</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">18:30–20:00</div><div><div class="tl-label">🍽 Dinner (on request)</div></div></div>
       </div>
 
       <div id="day-fr" class="day-content">
-        <div class="tl-item hospitality"><div class="tl-time">08:30–09:15</div><div><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">09:30–10:15</div><div><div class="tl-label">🍽 Frühstück Slot 2</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">10:00–11:30</div><div><div class="tl-label">Technische Abnahme Fahrerausrüstung</div></div></div>
-        <div class="tl-item hospitality"><div class="tl-time">12:00–13:00</div><div><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">13:15–14:15</div><div><div class="tl-label">🍽 Mittagessen Slot 2</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – 1. Training</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">15:40–16:00</div><div><div class="tl-label">Fahrerbesprechung</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – 2. Training</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">18:30–19:15</div><div><div class="tl-label">SUPERCUP TRAINING</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">08:30–09:15</div><div><div class="tl-label">🍽 Breakfast Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">09:30–10:15</div><div><div class="tl-label">🍽 Breakfast Slot 2</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">10:00–11:30</div><div><div class="tl-label">Driver equipment scrutineering</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">12:00–13:00</div><div><div class="tl-label">🍽 Lunch Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">13:15–14:15</div><div><div class="tl-label">🍽 Lunch Slot 2</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – Practice 1</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">15:40–16:00</div><div><div class="tl-label">Drivers' Briefing</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – Practice 2</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">18:30–19:15</div><div><div class="tl-label">SUPERCUP PRACTICE</div></div></div>
         <div class="tl-item hospitality"><div class="tl-time">19:30–20:30</div><div><div class="tl-label">🍽 Dinner Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">20:40–21:40</div><div><div class="tl-label">🍽 Dinner Slot 2</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">20:40–21:40</div><div><div class="tl-label">🍽 Dinner Slot 2</div></div></div>
       </div>
 
       <div id="day-sa" class="day-content">
-        <div class="tl-item hospitality"><div class="tl-time">08:00–08:45</div><div><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">08:50–09:35</div><div><div class="tl-label">🍽 Frühstück Slot 2</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">08:00–08:45</div><div><div class="tl-label">🍽 Breakfast Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">08:50–09:35</div><div><div class="tl-label">🍽 Breakfast Slot 2</div></div></div>
         <div class="tl-item supercup"><div class="tl-time">10:35–11:05</div><div><div class="tl-label">SUPERCUP QUALIFYING</div></div></div>
-        <div class="tl-item hospitality"><div class="tl-time">11:30–12:30</div><div><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – 3. Training</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">12:45–13:45</div><div><div class="tl-label">🍽 Mittagessen Slot 2</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">11:30–12:30</div><div><div class="tl-label">🍽 Lunch Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item f1 bg"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – Practice 3</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">12:45–13:45</div><div><div class="tl-label">🍽 Lunch Slot 2</div></div></div>
         <div class="tl-item hospitality"><div class="tl-time">15:30–16:30</div><div><div class="tl-label">🍽 Afternoon Snack</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying 🎯</div></div></div>
         <div class="tl-item hospitality"><div class="tl-time">18:00–19:00</div><div><div class="tl-label">🍽 Dinner Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">19:15–20:15</div><div><div class="tl-label">🍽 Dinner Slot 2</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">19:15–20:15</div><div><div class="tl-label">🍽 Dinner Slot 2</div></div></div>
       </div>
 
       <div id="day-so" class="day-content">
-        <div class="tl-item hospitality"><div class="tl-time">08:30–09:15</div><div><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">09:30–10:15</div><div><div class="tl-label">🍽 Frühstück Slot 2</div></div></div>
-        <div class="tl-item supercup"><div class="tl-time">11:45–12:20</div><div><div class="tl-label">SUPERCUP RENNEN<br><span style="font-size:11px;font-weight:400;">15 Runden / 30 Min + 1</span></div></div></div>
-        <div class="tl-item hospitality"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div></div>
-        <div class="tl-item logistics"><div class="tl-time">13:30–13:50</div><div><div class="tl-label">Siegerehrung</div></div></div>
-        <div class="tl-item hospitality-muted"><div class="tl-time">13:50–14:50</div><div><div class="tl-label">🍽 Mittagessen Slot 2</div></div></div>
-        <div class="tl-item f1"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX</div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">08:30–09:15</div><div><div class="tl-label">🍽 Breakfast Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">09:30–10:15</div><div><div class="tl-label">🍽 Breakfast Slot 2</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">11:45–12:20</div><div><div class="tl-label">SUPERCUP RACE<br><span style="font-size:11px;font-weight:400;">15 laps / 30 min + 1</span></div></div></div>
+        <div class="tl-item hospitality"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">🍽 Lunch Slot 1 (CLRT)</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">13:30–13:50</div><div><div class="tl-label">Podium ceremony</div></div></div>
+        <div class="tl-item hospitality-muted bg"><div class="tl-time">13:50–14:50</div><div><div class="tl-label">🍽 Lunch Slot 2</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">15:00–17:00</div><div><div class="tl-label">F1 GRAND PRIX 🎯</div></div></div>
         <div class="tl-item logistics"><div class="tl-time">19:30</div><div>
           <div class="tl-label">Get Together</div>
           <div style="font-size:11px;color:var(--accent);margin-top:2px;">Ristorante Del Centro · Vicolo Spalto Isolino 9, Monza</div>
@@ -1203,7 +1290,7 @@
   <div class="team-card clrt">
     <div class="team-header">
       <img src="img/SCLRT_wisvve.avif" alt="CLRT" class="team-logo" onerror="this.style.display='none'">
-      <div><div class="team-name">Schumacher CLRT</div><div class="team-sub">Unser Team</div></div>
+      <div><div class="team-name">Schumacher CLRT</div><div class="team-sub">Our Team</div></div>
     </div>
     <div class="drivers-grid">
       <div class="driver-card">
@@ -1346,7 +1433,7 @@
   <div class="team-card">
     <div class="team-header">
       <img src="img/Ombra_drbkdp.avif" alt="Ombra Racing" class="team-logo" onerror="this.style.display='none'">
-      <div><div class="team-name">Ombra Racing</div><div class="team-sub">neu 2026</div></div>
+      <div><div class="team-name">Ombra Racing</div><div class="team-sub">new 2026</div></div>
     </div>
     <div class="drivers-grid">
       <div class="driver-card">
@@ -1384,7 +1471,7 @@
   <div class="team-card">
     <div class="team-header">
       <img src="img/Looping_by_Cartech_ig3r70.avif" alt="Looping" class="team-logo" onerror="this.style.display='none'">
-      <div><div class="team-name">Looping by CarTech</div><div class="team-sub">neu 2026</div></div>
+      <div><div class="team-name">Looping by CarTech</div><div class="team-sub">new 2026</div></div>
     </div>
     <div class="drivers-grid">
       <div class="driver-card">
@@ -1399,7 +1486,139 @@
   </div>
 
   <div class="legend">
-    (R) Rookie &nbsp;·&nbsp; (PA) Pro-Am &nbsp;·&nbsp; (J) Porsche Junior – werksgefördert
+    (R) Rookie &nbsp;·&nbsp; (PA) Pro-Am &nbsp;·&nbsp; (J) Porsche Junior – factory supported
+  </div>
+
+</section>
+
+<!-- ═══════════════ TAB 3b: HOSPITALITY ═══════════════ -->
+<section id="tab-hospitality" class="tab-content">
+
+  <div class="card" style="border-left:3px solid #c9a84c;">
+    <h2>Schumacher CLRT – Guest Hospitality</h2>
+    <p style="font-size:12px;color:var(--accent);margin-bottom:12px;">Your access as guests of Schumacher CLRT at all attending weekends.</p>
+    <div class="hosp-info-grid">
+      <div class="hosp-info-item"><div class="hi-label">Access</div><div class="hi-val">Paddock pass (per event)</div></div>
+      <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
+      <div class="hosp-info-item"><div class="hi-label">Team contact</div><div class="hi-val">Schumacher CLRT</div></div>
+      <div class="hosp-info-item"><div class="hi-label">Meal slot</div><div class="hi-val">Slot 1 (shared w/ BWT, Proton, Martinet)</div></div>
+    </div>
+    <div class="hosp-note-box">
+      📋 Meal tickets are provided per event — keep them safe.<br>
+      🚫 Do not enter the garage without a team escort.<br>
+      📸 Photo OK in public paddock areas; check with team before garage shots.<br>
+      👔 Closed-toe shoes mandatory in all team areas.
+    </div>
+  </div>
+
+  <!-- Weekend selector -->
+  <div class="weekend-pills" style="margin-bottom:16px;">
+    <button onclick="showHospWeekend('barcelona')" id="hwp-barcelona" class="attended active">Barcelona</button>
+    <button onclick="showHospWeekend('spielberg')" id="hwp-spielberg" class="attended">Spielberg</button>
+    <button onclick="showHospWeekend('budapest')" id="hwp-budapest" class="attended">Budapest</button>
+    <button onclick="showHospWeekend('zandvoort')" id="hwp-zandvoort" class="attended">Zandvoort</button>
+    <button onclick="showHospWeekend('monza')" id="hwp-monza" class="attended">Monza</button>
+  </div>
+
+  <!-- BARCELONA -->
+  <div id="hw-barcelona" class="hosp-section active">
+    <div class="card">
+      <h2>🇪🇸 Barcelona – 12–14 June 2026</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Circuit de Barcelona-Catalunya</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Parking</div><div class="hi-val">Details to follow</div></div>
+      </div>
+      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots</h3>
+      <div class="hosp-note-box" style="text-align:center;color:var(--muted);">Details to follow</div>
+    </div>
+  </div>
+
+  <!-- SPIELBERG -->
+  <div id="hw-spielberg" class="hosp-section">
+    <div class="card">
+      <h2>🇦🇹 Spielberg – 26–28 June 2026</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Red Bull Ring</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Parking</div><div class="hi-val">Details to follow</div></div>
+      </div>
+      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots</h3>
+      <div class="hosp-note-box" style="text-align:center;color:var(--muted);">Details to follow</div>
+    </div>
+  </div>
+
+  <!-- BUDAPEST -->
+  <div id="hw-budapest" class="hosp-section">
+    <div class="card">
+      <h2>🇭🇺 Budapest – 24–26 July 2026</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Hungaroring</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Parking</div><div class="hi-val">Details to follow</div></div>
+      </div>
+      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots</h3>
+      <div class="hosp-note-box" style="text-align:center;color:var(--muted);">Details to follow</div>
+    </div>
+  </div>
+
+  <!-- ZANDVOORT -->
+  <div id="hw-zandvoort" class="hosp-section">
+    <div class="card">
+      <h2>🇳🇱 Zandvoort – 21–23 August 2026</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Circuit Zandvoort</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Special</div><div class="hi-val">Double-Header weekend</div></div>
+      </div>
+      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots</h3>
+      <div class="hosp-note-box" style="text-align:center;color:var(--muted);">Details to follow</div>
+    </div>
+  </div>
+
+  <!-- MONZA -->
+  <div id="hw-monza" class="hosp-section">
+    <div class="card">
+      <h2>🇮🇹 Monza – 04–07 September 2026</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Autodromo Nazionale Monza</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual / team polo welcome</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Special</div><div class="hi-val">Season Finale 🏆</div></div>
+      </div>
+      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots (Slot 1 = CLRT)</h3>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Fri</div><div class="hosp-slot-time">08:30–09:15</div><div class="hosp-slot-label">🍽 Breakfast</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Fri</div><div class="hosp-slot-time">12:00–13:00</div><div class="hosp-slot-label">🍽 Lunch</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Fri</div><div class="hosp-slot-time">19:30–20:30</div><div class="hosp-slot-label">🍽 Dinner</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sat</div><div class="hosp-slot-time">08:00–08:45</div><div class="hosp-slot-label">🍽 Breakfast</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sat</div><div class="hosp-slot-time">11:30–12:30</div><div class="hosp-slot-label">🍽 Lunch</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sat</div><div class="hosp-slot-time">15:30–16:30</div><div class="hosp-slot-label">🍽 Afternoon snack</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sat</div><div class="hosp-slot-time">18:00–19:00</div><div class="hosp-slot-label">🍽 Dinner</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sun</div><div class="hosp-slot-time">08:30–09:15</div><div class="hosp-slot-label">🍽 Breakfast</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Sun</div><div class="hosp-slot-time">12:30–13:30</div><div class="hosp-slot-label">🍽 Lunch</div></div>
+      <div class="hosp-note-box" style="margin-top:14px;">
+        Slot 1 shared with: BWT Lechner, Proton Huber, Hadeca, Martinet<br>
+        Slot 2 (~1h later): GP Elite, Dinamic, Target, Ombra
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #1a1a1a;">
+      <h2>Sunday Evening – Get Together 🥂</h2>
+      <div class="hosp-info-grid">
+        <div class="hosp-info-item"><div class="hi-label">Where</div><div class="hi-val">Ristorante Del Centro</div></div>
+        <div class="hosp-info-item"><div class="hi-label">When</div><div class="hi-val">Sun 07.09 · 19:30</div></div>
+        <div class="hosp-info-item" style="grid-column:1/-1"><div class="hi-label">Address</div><div class="hi-val">Vicolo Spalto Isolino 9, Monza</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Thursday Notes</h2>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Thu</div><div class="hosp-slot-time">13:00–14:30</div><div class="hosp-slot-label">🍽 Lunch (on request)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Thu</div><div class="hosp-slot-time">18:00</div><div class="hosp-slot-label">Team Managers' Meeting</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">Thu</div><div class="hosp-slot-time">18:30–20:00</div><div class="hosp-slot-label">🍽 Dinner (on request)</div></div>
+    </div>
   </div>
 
 </section>
@@ -1413,13 +1632,13 @@
     <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;
                 background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);">
       <div style="color:#fff;font-size:13px;font-weight:600;">Schumacher CLRT</div>
-      <div style="color:rgba(255,255,255,0.75);font-size:11px;">Driver · Team · Rookie Champion 2025</div>
+      <div style="color:rgba(255,255,255,0.75);font-size:11px;">Driver · Team · Rookie Champions 2025</div>
     </div>
   </div>
 
   <div class="card">
-    <h2>WM-Wertung 2026</h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Punkte nach jedem Rennen eintragen – werden lokal gespeichert. Zelle antippen zum Bearbeiten.</p>
+    <h2>Championship Standings 2026</h2>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Enter points after each race — stored locally. Tap a cell to edit.</p>
 
     <div style="overflow-x:auto;">
       <table class="standings-table" id="standings-table">
@@ -1445,16 +1664,16 @@
       </table>
     </div>
     <div class="standings-legend">
-      Tipp auf eine Zelle → Punkte eingeben → Enter bestätigen<br>
-      Tabelle sortiert automatisch nach Gesamtpunkten.
+      Tap a cell → enter points → confirm with Enter<br>
+      Table sorts automatically by total points.
     </div>
   </div>
 
   <div class="card">
-    <h2>Rennergebnisse</h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Porsche veröffentlicht PDFs nach jedem Rennen.</p>
+    <h2>Race Results</h2>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Porsche publishes official PDFs after each race.</p>
     <a class="results-link" href="https://racing.porsche.com/mobil-1-supercup/results-season-2026" target="_blank">
-      Ergebnisse &amp; Tabellen (racing.porsche.com)
+      Results &amp; Standings (racing.porsche.com)
       <span>↗</span>
     </a>
   </div>
@@ -1464,16 +1683,19 @@
 <!-- ═══════════════ BOTTOM NAV ═══════════════ -->
 <nav class="bottom-nav">
   <button onclick="showTab('saison')" id="nav-saison" class="active">
-    <span class="icon">🏁</span><span>Saison</span>
+    <span class="icon">🏁</span><span>Season</span>
   </button>
   <button onclick="showTab('wochenenden')" id="nav-wochenenden">
-    <span class="icon">📅</span><span>Wochenenden</span>
+    <span class="icon">📅</span><span>Weekends</span>
+  </button>
+  <button onclick="showTab('hospitality')" id="nav-hospitality">
+    <span class="icon">🍽</span><span>Hospitality</span>
   </button>
   <button onclick="showTab('teams')" id="nav-teams">
     <span class="icon">🚗</span><span>Teams</span>
   </button>
   <button onclick="showTab('ergebnisse')" id="nav-ergebnisse">
-    <span class="icon">📊</span><span>Ergebnisse</span>
+    <span class="icon">📊</span><span>Results</span>
   </button>
 </nav>
 
@@ -1483,7 +1705,7 @@
     <div class="gp-header">
       <h3 id="gp-pos-label">Fahrer wählen</h3>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button class="gp-clear" onclick="clearGridSlot(gridPickerCtx.wid, gridPickerCtx.pos)">Löschen</button>
+        <button class="gp-clear" onclick="clearGridSlot(gridPickerCtx.wid, gridPickerCtx.pos)">Clear</button>
         <button class="gp-close" onclick="closeGridPicker()">✕</button>
       </div>
     </div>
@@ -1514,6 +1736,39 @@ function showWeekend(name) {
   document.querySelectorAll('.weekend-pills button').forEach(el => el.classList.remove('active'));
   document.getElementById('ws-' + name).classList.add('active');
   document.getElementById('wp-' + name).classList.add('active');
+}
+
+// ── OUR RACES FILTER ──
+const ATTENDED_WKNDS = new Set(['barcelona','spielberg','budapest','zandvoort','monza']);
+let ourRacesFilter = false;
+function toggleOurRaces() {
+  ourRacesFilter = !ourRacesFilter;
+  document.getElementById('btn-our-races').classList.toggle('active', ourRacesFilter);
+  document.querySelectorAll('.weekend-pills button').forEach(btn => {
+    const wid = btn.id.replace('wp-', '');
+    btn.style.display = ourRacesFilter && !ATTENDED_WKNDS.has(wid) ? 'none' : '';
+  });
+  // if current active weekend is now hidden, switch to first attended
+  const activeSection = document.querySelector('.weekend-section.active');
+  if (activeSection && ourRacesFilter) {
+    const wid = activeSection.id.replace('ws-', '');
+    if (!ATTENDED_WKNDS.has(wid)) showWeekend('barcelona');
+  }
+}
+
+// ── HOSPITALITY WEEKEND SWITCH ──
+function showHospWeekend(name) {
+  document.querySelectorAll('.hosp-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('#tab-hospitality .weekend-pills button').forEach(el => el.classList.remove('active'));
+  document.getElementById('hw-' + name).classList.add('active');
+  document.getElementById('hwp-' + name).classList.add('active');
+}
+
+// ── HIGHLIGHTS FILTER ──
+function toggleHighlights(cardId, btn) {
+  const card = document.getElementById(cardId);
+  const on = card.classList.toggle('highlights-only');
+  btn.classList.toggle('active', on);
 }
 function showDay(name) {
   // Monza-specific (uses unprefixed ids)
@@ -1630,7 +1885,7 @@ function renderHeute() {
 
   card.style.display = 'block';
   document.getElementById('heute-title').textContent = prog.weekend;
-  document.getElementById('heute-sub').textContent = prog.day + ' · Euer Porsche-Programm';
+  document.getElementById('heute-sub').textContent = prog.day + ' · Your Porsche Programme';
 
   const now = nowMins();
   let nextSession = null;
@@ -1655,7 +1910,7 @@ function renderHeute() {
       <div class="hs-time">${s.time}</div>
       <div class="hs-icon">${TYPE_ICON[s.type]||'•'}</div>
       <div class="hs-label">${s.label}</div>
-      ${running ? '<div class="hs-badge">JETZT</div>' : ''}
+      ${running ? '<div class="hs-badge">NOW</div>' : ''}
     </div>`;
   }).join('');
 
@@ -1667,7 +1922,7 @@ function renderHeute() {
     const diff = timeToMins(nextSession.time) - now;
     const h = Math.floor(diff/60), m = diff%60;
     const when = h > 0 ? `${h}h ${m}min` : `${m} Min`;
-    nextEl.textContent = `⏱ Nächste Session: ${nextSession.label} – in ${when}`;
+    nextEl.textContent = `⏱ Next session: ${nextSession.label} – in ${when}`;
     nextEl.style.display = 'block';
   } else {
     nextEl.style.display = 'none';
@@ -1713,8 +1968,8 @@ function buildMap() {
       <div class="popup-inner">
         <div class="popup-race">${r.flag} ${r.name}</div>
         <div class="popup-date">${dateStr} · 11:45 Uhr</div>
-        ${isNext ? '<div class="popup-next">⏱ Nächstes Rennen</div>' : ''}
-        ${r.weekend ? `<div class="popup-date" style="margin-top:6px;cursor:pointer;text-decoration:underline" onclick="showTab('wochenenden');showWeekend('${r.weekend}')">→ Wochenend-Details</div>` : ''}
+        ${isNext ? '<div class="popup-next">⏱ Next Race</div>' : ''}
+        ${r.weekend ? `<div class="popup-date" style="margin-top:6px;cursor:pointer;text-decoration:underline" onclick="showTab('wochenenden');showWeekend('${r.weekend}')">→ Weekend Details</div>` : ''}
       </div>`;
 
     let marker;
@@ -1762,8 +2017,8 @@ function updateCountdown() {
     card.dataset.trackSet = '1';
   }
   if (!next) {
-    document.getElementById('cd-race-name').textContent = 'Saison 2026 beendet';
-    document.getElementById('cd-digits').innerHTML = '<div class="countdown-done">Bis zum nächsten Jahr! 🏆</div>';
+    document.getElementById('cd-race-name').textContent = 'Season 2026 finished';
+    document.getElementById('cd-digits').innerHTML = '<div class="countdown-done">Until next year! 🏆</div>';
     return;
   }
   document.getElementById('cd-race-name').textContent = `${next.flag} ${next.name}`;
@@ -1821,12 +2076,12 @@ async function loadWeather() {
             <div class="wd-rain">💧${days.precipitation_probability_max[i]}%</div>
           </div>`).join('')}
       </div>
-      <div class="weather-loc">Wetter für ${next.name} · Open-Meteo</div>`;
+      <div class="weather-loc">Weather for ${next.name} · Open-Meteo</div>`;
 
     document.getElementById('weather-loading').style.display = 'none';
     document.getElementById('weather-container').insertAdjacentHTML('beforeend', html);
   } catch {
-    document.getElementById('weather-loading').textContent = 'Wetter nicht verfügbar.';
+    document.getElementById('weather-loading').textContent = 'Weather unavailable.';
   }
 }
 
@@ -2012,7 +2267,7 @@ function renderGrid(wid) {
       : '';
     const infoHtml = driver
       ? `<div class="gs-info"><div class="gs-num">#${driver.num}</div><div class="gs-name">${driver.name}</div><div class="gs-team">${driver.team}</div></div>`
-      : `<div class="gs-empty-label">P${pos} – antippen</div>`;
+      : `<div class="gs-empty-label">P${pos} – tap to assign</div>`;
 
     slots += `<div class="${cls}" data-pos="${pos}" onclick="openGridPicker('${wid}',${pos})">
       <div class="gs-pos">${pos}</div>
@@ -2023,8 +2278,8 @@ function renderGrid(wid) {
   }
 
   container.innerHTML = `
-    <h2>Startaufstellung <button class="grid-edit-btn" onclick="event.stopPropagation();clearGrid('${wid}')">Zurücksetzen</button></h2>
-    <div class="grid-meta">Startplatz antippen → Fahrer zuweisen · wird lokal gespeichert</div>
+    <h2>Starting Grid <button class="grid-edit-btn" onclick="event.stopPropagation();clearGrid('${wid}')">Reset</button></h2>
+    <div class="grid-meta">Tap a position to assign a driver · saved locally</div>
     <div class="startgitter">${slots}</div>`;
 }
 
@@ -2034,7 +2289,7 @@ function openGridPicker(wid, pos) {
   const assigned = new Set(Object.entries(data).filter(([p]) => Number(p) !== pos).map(([,n]) => Number(n)));
   const current = data[pos] ? Number(data[pos]) : null;
 
-  document.getElementById('gp-pos-label').textContent = `Position ${pos}${pos === 1 ? ' – Pole Position' : ''}`;
+  document.getElementById('gp-pos-label').textContent = `Position ${pos}${pos === 1 ? ' – Pole Position 🏆' : ''}`;
 
   document.getElementById('gp-driver-list').innerHTML = DRIVERS.map(d => {
     const photo = DRIVER_PHOTOS[d.num];
@@ -2050,7 +2305,7 @@ function openGridPicker(wid, pos) {
         <div class="gp-name">${d.name}</div>
         <div class="gp-team">${d.team}</div>
       </div>
-      ${isCurrent ? '<div class="gp-assigned">✓ gesetzt</div>' : taken ? '<div class="gp-assigned">vergeben</div>' : ''}
+      ${isCurrent ? '<div class="gp-assigned">✓ assigned</div>' : taken ? '<div class="gp-assigned">taken</div>' : ''}
     </div>`;
   }).join('');
 
@@ -2076,7 +2331,7 @@ function clearGridSlot(wid, pos) {
 }
 
 function clearGrid(wid) {
-  if (!confirm('Startaufstellung für dieses Wochenende löschen?')) return;
+  if (!confirm('Reset starting grid for this weekend?')) return;
   localStorage.removeItem('supercup2026_grid_' + wid);
   renderGrid(wid);
 }
