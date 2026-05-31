@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 45%;
+    object-position: center 55%;
     display: block;
   }
   .header-car-overlay {
@@ -71,7 +71,7 @@
 
   /* ── DESKTOP LAYOUT: centred app shell ── */
   @media (min-width: 600px) {
-    body { background: #d8d5cf; }
+    body { background: #d8d5cf; padding-bottom: 80px; }
     header {
       max-width: 560px;
       margin: 16px auto 0;
@@ -79,8 +79,9 @@
       border: 1px solid var(--border);
       box-shadow: 0 4px 24px rgba(0,0,0,0.10);
       overflow: hidden;
+      position: relative; /* override sticky so it doesn't bleed full-width */
     }
-    header .header-car { height: 170px; }
+    header .header-car { height: 180px; }
     header .header-car-text h1 { font-size: 20px; }
     .tab-content {
       max-width: 560px;
@@ -88,15 +89,15 @@
       margin-right: auto;
     }
     nav.bottom-nav {
-      max-width: 560px;
+      width: 560px;
       left: 50%;
       right: auto;
       transform: translateX(-50%);
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
       border-radius: 12px 12px 0 0;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
     }
-    body { padding-bottom: 80px; }
   }
 
   .tab-content { display: none; padding: 16px; }
@@ -999,9 +1000,9 @@
   </div>
 
   <!-- ALL-RACE WEATHER -->
-  <div class="aw-card" id="all-weather-card">
+  <div class="aw-card" id="all-weather-card" style="display:none;">
     <h2>☀️ Race Weather</h2>
-    <div id="all-weather-body"><div style="font-size:12px;color:var(--muted);">Loading weather…</div></div>
+    <div id="all-weather-body"></div>
   </div>
 
   <!-- RENNKALENDER -->
@@ -2274,26 +2275,25 @@ async function loadWeatherAll() {
   const results = await Promise.all(fetches);
   const labels = ['Fri', 'Sat', 'Sun'];
 
-  const html = results.map(({ race: r, status, daily, availFrom }) => {
-    let content;
-    if (status === 'past') {
-      content = `<div class="aw-na">Race completed</div>`;
-    } else if (status === 'early') {
-      const mo = availFrom.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
-      content = `<div class="aw-na">Forecast available from ~${mo}</div>`;
-    } else if (status === 'error') {
-      content = `<div class="aw-na">Weather unavailable</div>`;
-    } else {
-      content = `<div class="aw-days">
-        ${daily.time.map((_, i) => `
-          <div class="aw-day">
-            <div class="aw-day-label">${labels[i] || daily.time[i].slice(5)}</div>
-            <div class="aw-day-icon">${wmoIcon(daily.weathercode[i])}</div>
-            <div class="aw-day-temp">${Math.round(daily.temperature_2m_max[i])}°/${Math.round(daily.temperature_2m_min[i])}°</div>
-            <div class="aw-day-rain">💧${daily.precipitation_probability_max[i]}%</div>
-          </div>`).join('')}
-      </div>`;
-    }
+  // Only show races where weather is actually available (status 'ok')
+  const available = results.filter(({ status }) => status === 'ok');
+
+  if (available.length === 0) {
+    // Hide the whole card if nothing is forecastable yet
+    document.getElementById('all-weather-card').style.display = 'none';
+    return;
+  }
+
+  const html = available.map(({ race: r, daily }) => {
+    const content = `<div class="aw-days">
+      ${daily.time.map((_, i) => `
+        <div class="aw-day">
+          <div class="aw-day-label">${labels[i] || daily.time[i].slice(5)}</div>
+          <div class="aw-day-icon">${wmoIcon(daily.weathercode[i])}</div>
+          <div class="aw-day-temp">${Math.round(daily.temperature_2m_max[i])}°/${Math.round(daily.temperature_2m_min[i])}°</div>
+          <div class="aw-day-rain">💧${daily.precipitation_probability_max[i]}%</div>
+        </div>`).join('')}
+    </div>`;
 
     const raceDate = new Date(r.raceDate).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
     return `<div class="aw-race">
@@ -2302,7 +2302,8 @@ async function loadWeatherAll() {
     </div>`;
   }).join('');
 
-  document.getElementById('all-weather-body').innerHTML = html || '<div class="aw-na">No data</div>';
+  document.getElementById('all-weather-card').style.display = 'block';
+  document.getElementById('all-weather-body').innerHTML = html;
 }
 
 // ── STANDINGS ──
