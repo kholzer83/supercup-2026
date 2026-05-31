@@ -117,7 +117,7 @@
     margin-bottom: 12px;
     position: relative;
     overflow: hidden;
-    background: #111;
+    background: #3a3a3a;
     background-size: cover;
     background-position: center;
     transition: background-image 0.4s;
@@ -126,7 +126,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10,10,10,0.78);
+    background: rgba(40,40,40,0.80);
     z-index: 0;
   }
   .countdown-card > * { position: relative; z-index: 1; }
@@ -163,12 +163,12 @@
     border-right: 1px solid #333;
   }
   .weather-day:last-child { border-right: none; }
-  .wd-label { font-size: 10px; color: #888; margin-bottom: 4px; }
-  .wd-icon { font-size: 22px; line-height: 1; margin-bottom: 4px; }
-  .wd-temp { font-size: 12px; font-weight: 500; }
-  .wd-rain { font-size: 10px; color: #888; }
+  .wd-label { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+  .wd-icon { font-size: 24px; line-height: 1; margin-bottom: 4px; }
+  .wd-temp { font-size: 14px; font-weight: 600; }
+  .wd-rain { font-size: 11px; color: #aaa; }
   .weather-loading { font-size: 12px; color: #888; margin-top: 8px; }
-  .weather-loc { font-size: 10px; color: #666; margin-top: 6px; }
+  .weather-loc { font-size: 10px; color: #777; margin-top: 6px; }
 
   /* ── MAP ── */
   .map-card {
@@ -899,27 +899,6 @@
     </div>
   </div>
 
-  <!-- ROUTE MAP -->
-  <div class="map-card">
-    <h2>2026 Season Route</h2>
-    <div id="race-map"></div>
-    <p style="font-size:10px;color:var(--muted);margin-top:8px;">Tap a venue → open weekend details · Map: Leaflet + CartoDB</p>
-  </div>
-
-  <!-- SAISONÜBERSICHT -->
-  <div class="card">
-    <h2>Season Overview</h2>
-    <div class="specs-grid">
-      <div class="spec-item"><div class="label">Season</div><div class="value">34th edition</div></div>
-      <div class="spec-item"><div class="label">Car</div><div class="value">911 Cup (992.2)</div></div>
-      <div class="spec-item"><div class="label">Drivers</div><div class="value">28</div></div>
-      <div class="spec-item"><div class="label">Teams</div><div class="value">10</div></div>
-      <div class="spec-item"><div class="label">Nations</div><div class="value">16</div></div>
-      <div class="spec-item"><div class="label">Races</div><div class="value">8</div></div>
-    </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:10px;">New car: 911 Cup (992.2) – first season in 2026</p>
-  </div>
-
   <!-- RENNKALENDER -->
   <div class="card">
     <h2>Race Calendar</h2>
@@ -937,18 +916,11 @@
     </table>
   </div>
 
-  <!-- SPECS -->
-  <div class="card">
-    <h2>911 Cup (992.2) – Specs</h2>
-    <div class="specs-grid">
-      <div class="spec-item"><div class="label">Engine</div><div class="value">4.0 L Flat-6</div></div>
-      <div class="spec-item"><div class="label">Power</div><div class="value">520 hp</div></div>
-      <div class="spec-item"><div class="label">Weight</div><div class="value">1,288 kg</div></div>
-      <div class="spec-item"><div class="label">Drive</div><div class="value">Rear-wheel</div></div>
-      <div class="spec-item"><div class="label">Gearbox</div><div class="value">6-speed dog-box</div></div>
-      <div class="spec-item"><div class="label">Tyres</div><div class="value">Michelin (25th yr.)</div></div>
-      <div class="spec-item" style="grid-column:1/-1"><div class="label">Price</div><div class="value">€ 269,000 excl. VAT</div></div>
-    </div>
+  <!-- ROUTE MAP -->
+  <div class="map-card">
+    <h2>2026 Season Route</h2>
+    <div id="race-map"></div>
+    <p style="font-size:10px;color:var(--muted);margin-top:8px;">Tap a venue → open weekend details · Map: Leaflet + CartoDB</p>
   </div>
 
   <!-- PUNKTESYSTEM -->
@@ -988,7 +960,7 @@
     <button onclick="showWeekend('spielberg')" id="wp-spielberg" class="attended">Spielberg</button>
     <button onclick="showWeekend('budapest')" id="wp-budapest" class="attended">Budapest</button>
     <button onclick="showWeekend('zandvoort')" id="wp-zandvoort" class="attended">Zandvoort</button>
-    <button onclick="showWeekend('monza')" id="wp-monza" class="attended active">Monza</button>
+    <button onclick="showWeekend('monza')" id="wp-monza" class="attended">Monza</button>
   </div>
 
   <!-- MONACO -->
@@ -1186,7 +1158,7 @@
   </div>
 
   <!-- MONZA -->
-  <div id="ws-monza" class="weekend-section active">
+  <div id="ws-monza" class="weekend-section">
     <div class="weekend-header">
       <div class="wh-track-wrap">
         <img src="img/2026trackmonzadetailed.avif" alt="Monza">
@@ -1321,10 +1293,6 @@
       <div class="driver-card">
         <img src="img/Caleb_Sumich_BWT_Lechner_Racing_nzpq8r.avif" alt="Caleb Sumich" class="driver-photo" onclick="photoClick(this)" onerror="this.outerHTML='<div class=\'driver-initials\'>CS</div>'">
         <div class="driver-info"><div class="driver-num">#3</div><div class="driver-name">Caleb Sumich</div><div class="driver-badge">(R)</div></div>
-      </div>
-      <div class="driver-card">
-        <img src="img/BWT_Lechner_gj4rk8.avif" alt="TBA" class="driver-photo" onclick="photoClick(this)" onerror="this.outerHTML='<div class=\'driver-initials\'>TBA</div>'">
-        <div class="driver-info"><div class="driver-num">#6</div><div class="driver-name">TBA</div></div>
       </div>
     </div>
   </div>
@@ -2352,6 +2320,14 @@ loadWeather();
 renderStandings();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
+
+// Default weekend = next attended race
+(function() {
+  const now = Date.now();
+  const attended = races.filter(r => r.weekend && ATTENDED_WKNDS.has(r.weekend));
+  const next = attended.find(r => new Date(r.raceDate).getTime() > now) || attended[attended.length - 1];
+  if (next && next.weekend) showWeekend(next.weekend);
+})();
 </script>
 </body>
 </html>
