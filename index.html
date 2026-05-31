@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Porsche Supercup 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F8F6F2;
+    --text: #1a1a1a;
+    --border: #ddd;
+    --accent: #555;
+    --muted: #aaa;
+    --clrt: #1a1a1a;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    padding-bottom: 70px;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  header p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* TABS */
+  .tab-content { display: none; padding: 16px; }
+  .tab-content.active { display: block; }
+
+  nav.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 20;
+  }
+  nav.bottom-nav button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 10px 4px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: color 0.15s;
+  }
+  nav.bottom-nav button .icon { font-size: 18px; }
+  nav.bottom-nav button.active { color: var(--text); font-weight: 500; }
+
+  /* CARDS */
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card.clrt {
+    border-left: 3px solid var(--clrt);
+  }
+  .card h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  /* PILLS */
+  .pill {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    color: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .pill.dabei { background: #f0f0f0; }
+  .pill.double { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .pill.finale { background: #fff; color: var(--text); border-color: #999; }
+  .pill.letztes { background: #fafafa; color: var(--accent); font-style: italic; }
+
+  /* POINTS ROW */
+  .points-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .point-pill {
+    background: #f5f5f5;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    text-align: center;
+  }
+  .point-pill span { display: block; font-weight: 600; font-size: 13px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 0 0 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  .race-num { color: var(--muted); font-size: 11px; width: 20px; }
+  .race-date { font-size: 11px; color: var(--accent); white-space: nowrap; }
+
+  /* SPECS */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .spec-item { font-size: 12px; }
+  .spec-item .label { color: var(--muted); font-size: 11px; }
+  .spec-item .value { font-weight: 500; }
+
+  /* WEEKEND SELECTOR */
+  .weekend-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .weekend-pills button {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .weekend-pills button.active {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+  }
+
+  /* WEEKEND CONTENT */
+  .weekend-section { display: none; }
+  .weekend-section.active { display: block; }
+
+  .coming-soon {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--muted);
+    font-size: 13px;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* DAY TABS */
+  .day-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .day-tabs button {
+    flex: 1;
+    background: #fff;
+    border: none;
+    border-right: 1px solid var(--border);
+    padding: 8px 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .day-tabs button:last-child { border-right: none; }
+  .day-tabs button.active { background: var(--text); color: #fff; }
+
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+
+  /* TIMELINE */
+  .timeline { }
+  .tl-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    align-items: flex-start;
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-time {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 90px;
+    padding-top: 1px;
+    white-space: nowrap;
+  }
+  .tl-body { flex: 1; }
+  .tl-label {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .tl-item.supercup .tl-time { color: var(--text); font-weight: 600; }
+  .tl-item.supercup .tl-label { font-weight: 600; font-size: 13px; border-left: 3px solid var(--clrt); padding-left: 8px; }
+  .tl-item.f1 .tl-time { color: var(--muted); }
+  .tl-item.f1 .tl-label { color: var(--muted); font-style: italic; }
+  .tl-item.hospitality .tl-label { }
+  .tl-item.hospitality-muted .tl-label { color: var(--muted); }
+  .tl-item.logistics .tl-label { color: #888; font-size: 12px; }
+
+  /* HOSP TABLE */
+  .hosp-table td { font-size: 12px; }
+  .hosp-table td:first-child { color: var(--accent); width: 60px; }
+  .hosp-table td:nth-child(2) { font-weight: 500; }
+  .hosp-table td:last-child { color: var(--accent); text-align: right; }
+
+  .hosp-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* TEAMS */
+  .team-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .team-card.clrt { border-left: 3px solid var(--clrt); }
+  .team-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .team-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .team-name { font-size: 13px; font-weight: 600; }
+  .team-sub { font-size: 11px; color: var(--muted); }
+
+  .drivers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .driver-card {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+  }
+  .driver-photo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: top;
+    flex-shrink: 0;
+    background: #eee;
+  }
+  .driver-initials {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .driver-info { min-width: 0; }
+  .driver-num { font-size: 10px; color: var(--muted); }
+  .driver-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .driver-badge { font-size: 10px; color: var(--muted); }
+  .driver-note { font-size: 10px; color: var(--accent); font-style: italic; }
+
+  .legend {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 20px 0 10px;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  @media (min-width: 480px) {
+    .drivers-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Porsche Mobil 1 Supercup 2026</h1>
+  <p>34. Saison · 911 Cup 992.2</p>
+</header>
+
+<!-- TAB 1: SAISON -->
+<section id="tab-saison" class="tab-content active">
+
+  <div class="card">
+    <h2>Saisonübersicht</h2>
+    <div class="specs-grid">
+      <div class="spec-item"><div class="label">Saison</div><div class="value">34. Auflage</div></div>
+      <div class="spec-item"><div class="label">Fahrzeug</div><div class="value">911 Cup (992.2)</div></div>
+      <div class="spec-item"><div class="label">Fahrer</div><div class="value">28</div></div>
+      <div class="spec-item"><div class="label">Teams</div><div class="value">10</div></div>
+      <div class="spec-item"><div class="label">Nationen</div><div class="value">16</div></div>
+      <div class="spec-item"><div class="label">Rennen</div><div class="value">8</div></div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px;">Neues Auto: 911 Cup (992.2) – erstmals im Einsatz 2026</p>
+  </div>
+
+  <div class="card">
+    <h2>Rennkalender</h2>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Datum</th>
+          <th>Strecke</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="race-num">R1</td>
+          <td class="race-date">04–06.06.</td>
+          <td>🇲🇨 Monaco</td>
+        </tr>
+        <tr>
+          <td class="race-num">R2</td>
+          <td class="race-date">12–14.06.</td>
+          <td>🇪🇸 Barcelona <span class="pill dabei">dabei</span></td>
+        </tr>
+        <tr>
+          <td class="race-num">R3</td>
+          <td class="race-date">26–28.06.</td>
+          <td>🇦🇹 Spielberg <span class="pill dabei">dabei</span></td>
+        </tr>
+        <tr>
+          <td class="race-num">R4</td>
+          <td class="race-date">17–19.07.</td>
+          <td>🇧🇪 Spa</td>
+        </tr>
+        <tr>
+          <td class="race-num">R5</td>
+          <td class="race-date">24–26.07.</td>
+          <td>🇭🇺 Budapest <span class="pill dabei">dabei</span></td>
+        </tr>
+        <tr>
+          <td class="race-num">R6+7</td>
+          <td class="race-date">21–23.08.</td>
+          <td>🇳🇱 Zandvoort <span class="pill dabei">dabei</span><span class="pill double">Double-Header</span><br><span style="font-size:10px;color:var(--muted);">Letztes Supercup-Gastspiel</span></td>
+        </tr>
+        <tr>
+          <td class="race-num">R8</td>
+          <td class="race-date">04–06.09.</td>
+          <td>🇮🇹 Monza <span class="pill dabei">dabei</span><span class="pill finale">Saisonfinale</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>911 Cup (992.2) – Specs</h2>
+    <div class="specs-grid">
+      <div class="spec-item"><div class="label">Motor</div><div class="value">4,0 L Boxer-6</div></div>
+      <div class="spec-item"><div class="label">Leistung</div><div class="value">520 PS</div></div>
+      <div class="spec-item"><div class="label">Gewicht</div><div class="value">1.288 kg</div></div>
+      <div class="spec-item"><div class="label">Antrieb</div><div class="value">Hinterrad</div></div>
+      <div class="spec-item"><div class="label">Getriebe</div><div class="value">6-Gang Klaue</div></div>
+      <div class="spec-item"><div class="label">Reifen</div><div class="value">Michelin (25. J.)</div></div>
+      <div class="spec-item" style="grid-column:1/-1"><div class="label">Preis</div><div class="value">269.000 € zzgl. MwSt.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Punktesystem</h2>
+    <div class="points-row">
+      <div class="point-pill"><span>25</span>P1</div>
+      <div class="point-pill"><span>20</span>P2</div>
+      <div class="point-pill"><span>17</span>P3</div>
+      <div class="point-pill"><span>14</span>P4</div>
+      <div class="point-pill"><span>12</span>P5</div>
+      <div class="point-pill"><span>10</span>P6</div>
+      <div class="point-pill"><span>9</span>P7</div>
+      <div class="point-pill"><span>8</span>P8</div>
+      <div class="point-pill"><span>7</span>P9</div>
+      <div class="point-pill"><span>6</span>P10</div>
+      <div class="point-pill"><span>5</span>P11</div>
+      <div class="point-pill"><span>4</span>P12</div>
+      <div class="point-pill"><span>3</span>P13</div>
+      <div class="point-pill"><span>2</span>P14</div>
+      <div class="point-pill"><span>1</span>P15</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- TAB 2: WOCHENENDEN -->
+<section id="tab-wochenenden" class="tab-content">
+
+  <div class="weekend-pills">
+    <button onclick="showWeekend('barcelona')" id="wp-barcelona">Barcelona</button>
+    <button onclick="showWeekend('spielberg')" id="wp-spielberg">Spielberg</button>
+    <button onclick="showWeekend('budapest')" id="wp-budapest">Budapest</button>
+    <button onclick="showWeekend('zandvoort')" id="wp-zandvoort">Zandvoort</button>
+    <button onclick="showWeekend('monza')" id="wp-monza" class="active">Monza</button>
+  </div>
+
+  <!-- BARCELONA -->
+  <div id="ws-barcelona" class="weekend-section">
+    <div class="coming-soon">
+      📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt
+    </div>
+    <div class="card clrt">
+      <h2>Schumacher CLRT – Hospitality</h2>
+      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+    </div>
+  </div>
+
+  <!-- SPIELBERG -->
+  <div id="ws-spielberg" class="weekend-section">
+    <div class="coming-soon">
+      📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt
+    </div>
+    <div class="card clrt">
+      <h2>Schumacher CLRT – Hospitality</h2>
+      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+    </div>
+  </div>
+
+  <!-- BUDAPEST -->
+  <div id="ws-budapest" class="weekend-section">
+    <div class="coming-soon">
+      📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt
+    </div>
+    <div class="card clrt">
+      <h2>Schumacher CLRT – Hospitality</h2>
+      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+    </div>
+  </div>
+
+  <!-- ZANDVOORT -->
+  <div id="ws-zandvoort" class="weekend-section">
+    <div class="coming-soon">
+      📅 Zeitplan folgt –<br>wird ca. Do vor dem Rennen ergänzt
+    </div>
+    <div class="card clrt">
+      <h2>Schumacher CLRT – Hospitality</h2>
+      <p style="color:var(--muted);font-size:12px;">Details folgen.</p>
+    </div>
+  </div>
+
+  <!-- MONZA -->
+  <div id="ws-monza" class="weekend-section active">
+
+    <!-- HOSPITALITY CARD -->
+    <div class="card clrt">
+      <h2>Schumacher CLRT – Hospitality Slots</h2>
+      <table class="hosp-table">
+        <tbody>
+          <tr><td>Fr 05.09</td><td>Frühstück</td><td>08:30–09:15</td></tr>
+          <tr><td>Fr 05.09</td><td>Mittagessen</td><td>12:00–13:00</td></tr>
+          <tr><td>Fr 05.09</td><td>Dinner</td><td>19:30–20:30</td></tr>
+          <tr><td>Sa 06.09</td><td>Frühstück</td><td>08:00–08:45</td></tr>
+          <tr><td>Sa 06.09</td><td>Mittagessen</td><td>11:30–12:30</td></tr>
+          <tr><td>Sa 06.09</td><td>Dinner</td><td>18:00–19:00</td></tr>
+          <tr><td>So 07.09</td><td>Frühstück</td><td>08:30–09:15</td></tr>
+          <tr><td>So 07.09</td><td>Mittagessen</td><td>12:30–13:30</td></tr>
+        </tbody>
+      </table>
+      <div class="hosp-note">
+        Slot 1 – auch: BWT Lechner, Proton Huber, Hadeca, Martinet<br>
+        Slot 2 (jeweils ~1h später): GP Elite, Dinamic, Target, Ombra
+      </div>
+    </div>
+
+    <!-- TAGESABLAUF -->
+    <div class="card">
+      <h2>Tagesablauf</h2>
+      <div class="day-tabs">
+        <button onclick="showDay('do')" id="dt-do" class="active">Do</button>
+        <button onclick="showDay('fr')" id="dt-fr">Fr</button>
+        <button onclick="showDay('sa')" id="dt-sa">Sa</button>
+        <button onclick="showDay('so')" id="dt-so">So</button>
+      </div>
+
+      <!-- DO -->
+      <div id="day-do" class="day-content active">
+        <div class="timeline">
+          <div class="tl-item logistics">
+            <div class="tl-time">08:00</div>
+            <div class="tl-body"><div class="tl-label">Paddock Entry &amp; Set-up</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">09:00–11:45</div>
+            <div class="tl-body"><div class="tl-label">Track Walk möglich</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">13:00</div>
+            <div class="tl-body"><div class="tl-label">Technische Abnahme</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">13:00–14:30</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen (auf Anfrage)</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">18:00</div>
+            <div class="tl-body"><div class="tl-label">Team Managers' Meeting</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">18:30–20:00</div>
+            <div class="tl-body"><div class="tl-label">🍽 Abendessen (auf Anfrage)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FR -->
+      <div id="day-fr" class="day-content">
+        <div class="timeline">
+          <div class="tl-item hospitality">
+            <div class="tl-time">08:30–09:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">09:30–10:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 2</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">10:00–11:30</div>
+            <div class="tl-body"><div class="tl-label">Technische Abnahme Fahrerausrüstung</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">12:00–13:00</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">13:15–14:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 2</div></div>
+          </div>
+          <div class="tl-item f1">
+            <div class="tl-time">13:30–14:30</div>
+            <div class="tl-body"><div class="tl-label">F1 – 1. Training</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">15:40–16:00</div>
+            <div class="tl-body"><div class="tl-label">Fahrerbesprechung</div></div>
+          </div>
+          <div class="tl-item f1">
+            <div class="tl-time">17:00–18:00</div>
+            <div class="tl-body"><div class="tl-label">F1 – 2. Training</div></div>
+          </div>
+          <div class="tl-item supercup">
+            <div class="tl-time">18:30–19:15</div>
+            <div class="tl-body"><div class="tl-label">SUPERCUP TRAINING</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">19:30–20:30</div>
+            <div class="tl-body"><div class="tl-label">🍽 Dinner Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">20:40–21:40</div>
+            <div class="tl-body"><div class="tl-label">🍽 Dinner Slot 2</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SA -->
+      <div id="day-sa" class="day-content">
+        <div class="timeline">
+          <div class="tl-item hospitality">
+            <div class="tl-time">08:00–08:45</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">08:50–09:35</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 2</div></div>
+          </div>
+          <div class="tl-item supercup">
+            <div class="tl-time">10:35–11:05</div>
+            <div class="tl-body"><div class="tl-label">SUPERCUP QUALIFYING</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">11:30–12:30</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item f1">
+            <div class="tl-time">12:30–13:30</div>
+            <div class="tl-body"><div class="tl-label">F1 – 3. Training</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">12:45–13:45</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 2</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">15:30–16:30</div>
+            <div class="tl-body"><div class="tl-label">🍽 Afternoon Snack</div></div>
+          </div>
+          <div class="tl-item f1">
+            <div class="tl-time">16:00–17:00</div>
+            <div class="tl-body"><div class="tl-label">F1 – Qualifying</div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">18:00–19:00</div>
+            <div class="tl-body"><div class="tl-label">🍽 Dinner Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">19:15–20:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Dinner Slot 2</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SO -->
+      <div id="day-so" class="day-content">
+        <div class="timeline">
+          <div class="tl-item hospitality">
+            <div class="tl-time">08:30–09:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">09:30–10:15</div>
+            <div class="tl-body"><div class="tl-label">🍽 Frühstück Slot 2</div></div>
+          </div>
+          <div class="tl-item supercup">
+            <div class="tl-time">11:45–12:20</div>
+            <div class="tl-body"><div class="tl-label">SUPERCUP RENNEN<br><span style="font-size:11px;font-weight:400;">15 Runden / 30 Min + 1</span></div></div>
+          </div>
+          <div class="tl-item hospitality">
+            <div class="tl-time">12:30–13:30</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 1 (CLRT)</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">13:30–13:50</div>
+            <div class="tl-body"><div class="tl-label">Siegerehrung</div></div>
+          </div>
+          <div class="tl-item hospitality-muted">
+            <div class="tl-time">13:50–14:50</div>
+            <div class="tl-body"><div class="tl-label">🍽 Mittagessen Slot 2</div></div>
+          </div>
+          <div class="tl-item f1">
+            <div class="tl-time">15:00–17:00</div>
+            <div class="tl-body"><div class="tl-label">F1 GRAND PRIX</div></div>
+          </div>
+          <div class="tl-item logistics">
+            <div class="tl-time">19:30</div>
+            <div class="tl-body">
+              <div class="tl-label">Get Together</div>
+              <div style="font-size:11px;color:var(--accent);margin-top:2px;">Ristorante Del Centro<br>Vicolo Spalto Isolino 9, Monza</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end tagesablauf card -->
+  </div><!-- end monza -->
+
+</section>
+
+<!-- TAB 3: TEAMS -->
+<section id="tab-teams" class="tab-content">
+
+  <!-- SCHUMACHER CLRT -->
+  <div class="team-card clrt">
+    <div class="team-header">
+      <img src="img/SCLRT_wisvve.avif" alt="CLRT" class="team-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="team-name">Schumacher CLRT</div>
+        <div class="team-sub">Unser Team</div>
+      </div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Chester_Kieffer_Schumacher_CLRT_xmyylw.avif" alt="Chester Kieffer" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>CK</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#11</div>
+          <div class="driver-name">Chester Kieffer</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Flynt_Schuring_Schumacher_CLRT_i8h1ti.avif" alt="Flynt Schuring" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>FS</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#12</div>
+          <div class="driver-name">Flynt Schuring</div>
+          <div class="driver-badge">(J)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BWT LECHNER -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/BWT_Lechner_gj4rk8.avif" alt="BWT Lechner" class="team-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="team-name">BWT Lechner Racing 🇦🇹</div>
+      </div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Robert_de_Haan_BWT_Lechner_Racing_bvjgro.avif" alt="Robert de Haan" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>RH</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#1</div>
+          <div class="driver-name">Robert de Haan</div>
+          <div class="driver-note">Titelkandidat · Monaco-Sieger 2025</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Marcus_Amand_BWT_Lechner_Racing_jzzlln.avif" alt="Marcus Amand" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>MA</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#2</div>
+          <div class="driver-name">Marcus Amand</div>
+          <div class="driver-badge">(R)(J)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Caleb_Sumich_BWT_Lechner_Racing_nzpq8r.avif" alt="Caleb Sumich" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>CS</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#3</div>
+          <div class="driver-name">Caleb Sumich</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/BWT_Lechner_gj4rk8.avif" alt="TBA" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>TBA</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#6</div>
+          <div class="driver-name">TBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTON -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Proton_jn4xow.avif" alt="Proton" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">Proton Competition</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Kaegan_Masters_Proton_Competition_ijrztw.avif" alt="Keagan Masters" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>KM</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#4</div>
+          <div class="driver-name">Keagan Masters</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Kai_Pfister_Proton_Competition_ukemst.avif" alt="Kai Pfister" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>KP</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#5</div>
+          <div class="driver-name">Kai Pfister</div>
+          <div class="driver-badge">(PA)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Proton_jn4xow.avif" alt="TBA" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>TBA</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#6</div>
+          <div class="driver-name">TBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARTINET -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Martinet_yu5t3w.avif" alt="Martinet" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">Martinet by Alméras</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Theo_Oeverhaus_Martinet_by_Almeras_dd4w1u.avif" alt="Theo Oeverhaus" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>TO</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#15</div>
+          <div class="driver-name">Theo Oeverhaus</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Paul_Cauhaupe_Martinet_by_Almeras_kkhm7k.avif" alt="Paul Cauhaupé" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>PC</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#16</div>
+          <div class="driver-name">Paul Cauhaupé</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Jaap_van_Lagen_Martinet_by_Almeras_kv4qcn.avif" alt="Jaap van Lagen" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>JL</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#17</div>
+          <div class="driver-name">Jaap van Lagen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DINAMIC -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Dinamic_rmq6rg.avif" alt="Dinamic" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">Dinamic Motorsport</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Andrea_Bristot_Dinamic_Motorsport_SRL_byxvla.avif" alt="Andrea Bristot" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>AB</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#7</div>
+          <div class="driver-name">Andrea Bristot</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/William_Mezzetti_Dinamic_Motorsport_xt8wi3.avif" alt="William Mezzetti" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>WM</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#8</div>
+          <div class="driver-name">William Mezzetti</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Dinamic_rmq6rg.avif" alt="TBA" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>TBA</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#9</div>
+          <div class="driver-name">TBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GP ELITE -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/GPElite_njwgia.avif" alt="GP Elite" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">Team GP Elite</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Samer_Shahin_GP_Elite_jdhooy.avif" alt="Samer Shahin" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>SS</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#23</div>
+          <div class="driver-name">Samer Shahin</div>
+          <div class="driver-badge">(PA)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Jonas_GreifGP_Elite_eefri2.avif" alt="Jonas Grief" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>JG</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#24</div>
+          <div class="driver-name">Jonas Grief</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Wouter_Boerekamps_Team_GP_Elite_xuxoip.avif" alt="Wouter Boerekamps" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>WB</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#25</div>
+          <div class="driver-name">Wouter Boerekamps</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Gustav_Burton_Team_GP_Elite_c3o4rr.avif" alt="Gustav Burton" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>GB</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#26</div>
+          <div class="driver-name">Gustav Burton</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Matheus_Ferreira_Team_GP_Elite_v36vnp.avif" alt="Matheus Ferreira" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>MF</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#27</div>
+          <div class="driver-name">Matheus Ferreira</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RGB RACING -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/RGB_t1pzm2.avif" alt="RGB Racing" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">RGB Racing</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Jorge_E.avif" alt="Jorge Ramírez" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>JR</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#13</div>
+          <div class="driver-name">Jorge Ramírez</div>
+          <div class="driver-badge">(PA)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Juan_Pablo_Vega_Dieppa_RGB_Racing_Team_dzka4a.avif" alt="J.P. Vega Dieppa" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>JV</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#14</div>
+          <div class="driver-name">J.P. Vega Dieppa</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OMBRA -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Ombra_drbkdp.avif" alt="Ombra Racing" class="team-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="team-name">Ombra Racing</div>
+        <div class="team-sub">neu 2026</div>
+      </div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Liam_McNeilly_Ombra_Racing_hdynzi.avif" alt="Liam McNeilly" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>LM</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#18</div>
+          <div class="driver-name">Liam McNeilly</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Luciano_Facundo_Martinez_Ombra_Racing_ezwshd.avif" alt="L.F. Martinez" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>LM</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#19</div>
+          <div class="driver-name">L.F. Martinez</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Filip_Ugran_Ombra_Racing_mv6xqc.avif" alt="Filip Ugran" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>FU</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#20</div>
+          <div class="driver-name">Filip Ugran</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARGET -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Target_ylha7p.avif" alt="Target Competition" class="team-logo" onerror="this.style.display='none'">
+      <div><div class="team-name">Target Competition</div></div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Aldo_Festante_Target_SRL_jgauie.avif" alt="Aldo Festante" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>AF</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#28</div>
+          <div class="driver-name">Aldo Festante</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Jack_Young_Target_SRL_dfp4nz.avif" alt="Jack Young" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>JY</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#29</div>
+          <div class="driver-name">Jack Young</div>
+          <div class="driver-badge">(R)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOOPING -->
+  <div class="team-card">
+    <div class="team-header">
+      <img src="img/Looping_by_Cartech_ig3r70.avif" alt="Looping by CarTech" class="team-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="team-name">Looping by CarTech</div>
+        <div class="team-sub">neu 2026</div>
+      </div>
+    </div>
+    <div class="drivers-grid">
+      <div class="driver-card">
+        <img src="img/Dirk_Schouten_Looping_by_CarTech_igrxrd.avif" alt="Dirk Schouten" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>DS</div>'">
+        <div class="driver-info">
+          <div class="driver-num">#22</div>
+          <div class="driver-name">Dirk Schouten</div>
+        </div>
+      </div>
+      <div class="driver-card">
+        <img src="img/Looping_by_Cartech_ig3r70.avif" alt="TBA" class="driver-photo" onerror="this.outerHTML='<div class=\'driver-initials\'>TBA</div>'">
+        <div class="driver-info">
+          <div class="driver-num">–</div>
+          <div class="driver-name">TBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    (R) Rookie &nbsp;·&nbsp; (PA) Pro-Am &nbsp;·&nbsp; (J) Porsche Junior – werksgefördert
+  </div>
+
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button onclick="showTab('saison')" id="nav-saison" class="active">
+    <span class="icon">🏁</span>
+    <span>Saison</span>
+  </button>
+  <button onclick="showTab('wochenenden')" id="nav-wochenenden">
+    <span class="icon">📅</span>
+    <span>Wochenenden</span>
+  </button>
+  <button onclick="showTab('teams')" id="nav-teams">
+    <span class="icon">🚗</span>
+    <span>Teams</span>
+  </button>
+</nav>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('nav.bottom-nav button').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+  }
+
+  function showWeekend(name) {
+    document.querySelectorAll('.weekend-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.weekend-pills button').forEach(el => el.classList.remove('active'));
+    document.getElementById('ws-' + name).classList.add('active');
+    document.getElementById('wp-' + name).classList.add('active');
+  }
+
+  function showDay(name) {
+    document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.day-tabs button').forEach(el => el.classList.remove('active'));
+    document.getElementById('day-' + name).classList.add('active');
+    document.getElementById('dt-' + name).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
