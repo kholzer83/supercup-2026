@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 55%;
+    object-position: center 50%;
     display: block;
   }
   .header-car-overlay {
@@ -1085,6 +1085,7 @@
     <button onclick="showWeekend('monaco')" id="wp-monaco">Monaco</button>
     <button onclick="showWeekend('barcelona')" id="wp-barcelona" class="attended">Barcelona</button>
     <button onclick="showWeekend('spielberg')" id="wp-spielberg" class="attended">Spielberg</button>
+    <button onclick="showWeekend('spa')" id="wp-spa">Spa</button>
     <button onclick="showWeekend('budapest')" id="wp-budapest" class="attended">Budapest</button>
     <button onclick="showWeekend('zandvoort')" id="wp-zandvoort" class="attended">Zandvoort</button>
     <button onclick="showWeekend('monza')" id="wp-monza" class="attended">Monza</button>
@@ -1249,6 +1250,46 @@
     </div>
     <div id="grid-spielberg" class="grid-card"></div>
   </div>
+  <!-- SPA -->
+  <div id="ws-spa" class="weekend-section">
+    <div class="weekend-header">
+      <div class="wh-track-wrap">
+        <img src="img/2026trackspafrancorchampsdetailed.avif" alt="Spa Circuit">
+      </div>
+      <div class="wh-info">
+        <div class="wh-round">Round 4 · 17–19 July 2026</div>
+        <div class="wh-name">🇧🇪 Spa</div>
+        <div class="wh-meta">
+          <span>Circuit de Spa-Francorchamps</span>
+          <span>UTC+2</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="sched-spa">
+      <h2>Schedule <button class="filter-toggle-btn" style="float:right;margin-top:-2px;" onclick="toggleHighlights('sched-spa',this)">🎯 Highlights</button></h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">All times local (UTC+2)</p>
+      <div class="day-tabs">
+        <button onclick="showDayCtx('sp','fr')" id="spdt-fr" class="active">Fri</button>
+        <button onclick="showDayCtx('sp','sa')" id="spdt-sa">Sat</button>
+        <button onclick="showDayCtx('sp','so')" id="spdt-so">Sun</button>
+      </div>
+      <div id="spday-fr" class="day-content active">
+        <div class="tl-item logistics bg"><div class="tl-time">13:30–14:30</div><div><div class="tl-label">F1 – Practice 1</div></div></div>
+        <div class="tl-item logistics bg"><div class="tl-time">17:00–18:00</div><div><div class="tl-label">F1 – Practice 2</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">18:35–19:20</div><div><div class="tl-label">SUPERCUP PRACTICE</div></div></div>
+      </div>
+      <div id="spday-sa" class="day-content">
+        <div class="tl-item logistics bg"><div class="tl-time">12:30–13:30</div><div><div class="tl-label">F1 – Practice 3</div></div></div>
+        <div class="tl-item supercup"><div class="tl-time">14:00–14:30</div><div><div class="tl-label">SUPERCUP QUALIFYING</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">16:00–17:00</div><div><div class="tl-label">F1 – Qualifying 🎯</div></div></div>
+      </div>
+      <div id="spday-so" class="day-content">
+        <div class="tl-item supercup"><div class="tl-time">11:45–12:20</div><div><div class="tl-label">SUPERCUP RACE</div></div></div>
+        <div class="tl-item f1 highlight"><div class="tl-time">15:00</div><div><div class="tl-label">F1 – Race 🎯</div></div></div>
+      </div>
+    </div>
+  </div>
+
   <div id="ws-budapest" class="weekend-section">
     <div class="weekend-header">
       <div class="wh-track-wrap">
@@ -1864,7 +1905,7 @@ const races = [
   { id: 'monaco',    name: 'Monaco',    flag: '🇲🇨', raceDate: '2026-06-07T11:45:00', lat: 43.7384, lon: 7.4246,  weekend: 'monaco',    track: 'img/2026trackmontecarlodetailed.avif' },
   { id: 'barcelona', name: 'Barcelona', flag: '🇪🇸', raceDate: '2026-06-14T11:45:00', lat: 41.57,   lon: 2.26,   weekend: 'barcelona', track: 'img/2026trackcatalunyadetailed.avif' },
   { id: 'spielberg', name: 'Spielberg', flag: '🇦🇹', raceDate: '2026-06-28T11:45:00', lat: 47.22,   lon: 14.76,  weekend: 'spielberg', track: 'img/2026trackspielbergdetailed.avif' },
-  { id: 'spa',       name: 'Spa',       flag: '🇧🇪', raceDate: '2026-07-19T11:45:00', lat: 50.44,   lon: 5.97,   weekend: null,        track: 'img/2026trackspafrancorchampsdetailed.avif' },
+  { id: 'spa',       name: 'Spa',       flag: '🇧🇪', raceDate: '2026-07-19T11:45:00', lat: 50.44,   lon: 5.97,   weekend: 'spa',       track: 'img/2026trackspafrancorchampsdetailed.avif' },
   { id: 'budapest',  name: 'Budapest',  flag: '🇭🇺', raceDate: '2026-07-26T11:45:00', lat: 47.58,   lon: 19.25,  weekend: 'budapest',  track: 'img/2026trackhungaroringdetailed.avif' },
   { id: 'zandvoort', name: 'Zandvoort', flag: '🇳🇱', raceDate: '2026-08-23T11:45:00', lat: 52.39,   lon: 4.54,   weekend: 'zandvoort', track: 'img/2026trackzandvoortdetailed.avif' },
   { id: 'monza',     name: 'Monza',     flag: '🇮🇹', raceDate: '2026-09-07T11:45:00', lat: 45.62,   lon: 9.29,   weekend: 'monza',     track: 'img/2026trackmonzadetailed.avif' },
