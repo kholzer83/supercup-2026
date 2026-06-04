@@ -1727,17 +1727,8 @@
 
 </section>
 
-<!-- ═══════════════ TAB 6: PLANNER ═══════════════ -->
+<!-- ═══════════════ TAB 6: NOTES ═══════════════ -->
 <section id="tab-planner" class="tab-content">
-
-  <!-- PACKING LIST -->
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <h2 style="margin:0;">🎒 Packing List</h2>
-      <button class="pack-reset-btn" onclick="resetPacking()">Reset all</button>
-    </div>
-    <div id="pack-list"></div>
-  </div>
 
   <!-- PERSONAL NOTES -->
   <div class="card">
@@ -1773,7 +1764,7 @@
     <span class="icon">📊</span><span>Results</span>
   </button>
   <button onclick="showTab('planner')" id="nav-planner">
-    <span class="icon">📋</span><span>Planner</span>
+    <span class="icon">📝</span><span>Notes</span>
   </button>
 </nav>
 
@@ -2536,50 +2527,6 @@ function closeGridPicker() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGridPicker(); });
 
-// ── PACKING LIST ──
-const PACK_CATEGORIES = [
-  { title: '🪪 Documents', items: ['Passport / ID', 'Tickets (race + hospitality)', 'Hotel booking', 'Travel insurance', 'Driver licence', 'Credit card / cash'] },
-  { title: '👗 Outfit', items: ['Porsche fan outfit', 'Rain jacket', 'Comfortable shoes', 'Sunglasses', 'Sunscreen', 'Cap / hat'] },
-  { title: '📱 Tech', items: ['Phone + charger', 'Power bank', 'Camera / GoPro', 'Earbuds / earplugs', 'Travel adapter'] },
-  { title: '🎒 Essentials', items: ['Medication', 'Water bottle', 'Snacks', 'Hand sanitiser', 'Small backpack'] },
-  { title: '🏎 Fan Extras', items: ['Flag or banner', 'Autograph cards', 'Race programme', 'Souvenir budget 😄'] },
-];
-const PACK_LS_KEY = 'supercup2026_packing';
-
-function loadPacking() {
-  try { return JSON.parse(localStorage.getItem(PACK_LS_KEY)) || {}; } catch { return {}; }
-}
-function savePacking(data) { localStorage.setItem(PACK_LS_KEY, JSON.stringify(data)); }
-
-function renderPacking() {
-  const data = loadPacking();
-  const html = PACK_CATEGORIES.map(cat => {
-    const items = cat.items.map(item => {
-      const id = 'pack_' + item.replace(/\W+/g, '_');
-      const checked = !!data[id];
-      return `<label class="pack-item${checked ? ' checked' : ''}">
-        <input type="checkbox" onchange="togglePacking('${id}',this)" ${checked ? 'checked' : ''}>
-        <span class="pack-item-label">${item}</span>
-      </label>`;
-    }).join('');
-    return `<div class="pack-cat-title">${cat.title}</div>${items}`;
-  }).join('');
-  document.getElementById('pack-list').innerHTML = html;
-}
-
-function togglePacking(id, cb) {
-  const data = loadPacking();
-  if (cb.checked) data[id] = 1; else delete data[id];
-  savePacking(data);
-  cb.closest('.pack-item').classList.toggle('checked', cb.checked);
-}
-
-function resetPacking() {
-  if (!confirm('Reset packing list?')) return;
-  localStorage.removeItem(PACK_LS_KEY);
-  renderPacking();
-}
-
 // ── PERSONAL NOTES ──
 let currentNotesWkd = 'barcelona';
 
@@ -2624,7 +2571,6 @@ loadWeatherAll();
 renderStandings();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
-renderPacking();
 initNotes();
 
 // Default weekend = next attended race
