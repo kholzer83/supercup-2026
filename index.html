@@ -466,7 +466,54 @@
   .driver-note { font-size: 10px; color: var(--accent); font-style: italic; }
   .legend { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.7; }
 
+  /* ── RACE RESULT ENTRY ── */
+  .rr-race-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .rr-pill {
+    padding: 5px 10px; border-radius: 99px; font-size: 11px; font-weight: 500;
+    border: 1px solid var(--border); background: #fff; cursor: pointer;
+    color: var(--accent); font-family: 'Inter', sans-serif; position: relative;
+  }
+  .rr-pill.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .rr-pill .rr-done { position: absolute; top: -4px; right: -4px; background: #4caf50; color: #fff; font-size: 8px; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .rr-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f0ede8; }
+  .rr-row:last-child { border-bottom: none; }
+  .rr-pos { font-size: 13px; font-weight: 700; color: var(--muted); width: 28px; text-align: center; flex-shrink: 0; }
+  .rr-pos.p1 { color: #c8962a; }
+  .rr-pos.p2 { color: #888; }
+  .rr-pos.p3 { color: #a0522d; }
+  .rr-pts { font-size: 11px; color: var(--muted); width: 32px; text-align: right; flex-shrink: 0; }
+  .rr-select {
+    flex: 1; padding: 6px 8px; border: 1px solid var(--border); border-radius: 7px;
+    font-family: 'Inter', sans-serif; font-size: 12px; background: #fff; color: var(--text);
+  }
+  .rr-select.filled { border-color: #1a1a1a; font-weight: 500; }
+  .rr-save-btn {
+    flex: 1; padding: 10px; background: #1a1a1a; color: #fff; border: none;
+    border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px;
+    font-weight: 600; cursor: pointer;
+  }
+  .rr-clear-btn {
+    padding: 10px 16px; background: none; border: 1px solid var(--border);
+    border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px;
+    cursor: pointer; color: var(--accent);
+  }
+
   /* ── STANDINGS ── */
+  .std-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0ede8; }
+  .std-row:last-child { border-bottom: none; }
+  .std-pos { font-size: 13px; font-weight: 700; width: 24px; text-align: center; flex-shrink: 0; color: var(--muted); }
+  .std-pos.p1 { color: #c8962a; }
+  .std-pos.p2 { color: #888; }
+  .std-pos.p3 { color: #a0522d; }
+  .std-name { flex: 1; font-size: 13px; font-weight: 500; }
+  .std-name.clrt { font-weight: 700; }
+  .std-team { font-size: 11px; color: var(--muted); }
+  .std-pts { font-size: 15px; font-weight: 700; width: 38px; text-align: right; }
+  .std-bar-wrap { width: 60px; flex-shrink: 0; }
+  .std-bar { height: 4px; background: #1a1a1a; border-radius: 2px; }
+  .std-empty { font-size: 12px; color: var(--muted); font-style: italic; padding: 8px 0; }
+
+  /* ── OLD STANDINGS (kept for CSS refs) ── */
   .standings-table {
     width: 100%;
     border-collapse: collapse;
@@ -1670,7 +1717,7 @@
 
   <div style="border-radius:12px;overflow:hidden;margin-bottom:12px;position:relative;">
     <img src="img/CLRT_team_champions_2025.avif" alt="Schumacher CLRT – Team Champions 2025"
-         style="width:100%;max-height:220px;object-fit:cover;object-position:center 20%;display:block;">
+         style="width:100%;max-height:200px;object-fit:cover;object-position:center 20%;display:block;">
     <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px;
                 background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);">
       <div style="color:#fff;font-size:13px;font-weight:600;">Schumacher CLRT</div>
@@ -1678,45 +1725,24 @@
     </div>
   </div>
 
+  <!-- RACE RESULT ENTRY -->
   <div class="card">
-    <h2>Championship Standings 2026</h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Enter points after each race — stored locally. Tap a cell to edit.</p>
-
-    <div style="overflow-x:auto;">
-      <table class="standings-table" id="standings-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Fahrer</th>
-            <th>Team</th>
-            <th title="Monaco">R1</th>
-            <th title="Barcelona">R2</th>
-            <th title="Spielberg">R3</th>
-            <th title="Spa">R4</th>
-            <th title="Budapest">R5</th>
-            <th title="Zandvoort">R6</th>
-            <th title="Zandvoort">R7</th>
-            <th title="Monza">R8</th>
-            <th>Σ</th>
-          </tr>
-        </thead>
-        <tbody id="standings-body">
-          <!-- Filled by JS -->
-        </tbody>
-      </table>
-    </div>
-    <div class="standings-legend">
-      Tap a cell → enter points → confirm with Enter<br>
-      Table sorts automatically by total points.
+    <h2>Enter Race Result</h2>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Select race → pick finishing order → Save. Points calculated automatically.</p>
+    <div class="rr-race-pills" id="rr-race-pills"></div>
+    <div id="rr-positions"></div>
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button class="rr-save-btn" onclick="saveRaceResult()">✓ Save Result</button>
+      <button class="rr-clear-btn" onclick="clearRaceResult()">Reset</button>
     </div>
   </div>
 
+  <!-- CHAMPIONSHIP STANDINGS -->
   <div class="card">
-    <h2>Race Results</h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Porsche publishes official PDFs after each race.</p>
-    <a class="results-link" href="https://racing.porsche.com/mobil-1-supercup/results-season-2026" target="_blank">
-      Results &amp; Standings (racing.porsche.com)
-      <span>↗</span>
+    <h2>Championship Standings 2026</h2>
+    <div id="standings-display"></div>
+    <a class="results-link" style="margin-top:12px;display:flex;" href="https://racing.porsche.com/mobil-1-supercup/results-season-2026" target="_blank">
+      Official results (racing.porsche.com) <span>↗</span>
     </a>
   </div>
 
@@ -2271,64 +2297,130 @@ const DRIVERS = [
   { num: 28, name: 'Aldo Festante',      team: 'Target' },
   { num: 29, name: 'Jack Young',         team: 'Target' },
 ];
-const ROUNDS = 8;
-const LS_KEY = 'supercup2026_pts';
+// ── RACE RESULTS (Top 10 entry, auto points) ──
+const RACE_PTS = [25, 20, 17, 14, 12, 10, 9, 8, 7, 6];
+const RACES_META = [
+  { r:1, name:'Monaco',    flag:'🇲🇨' },
+  { r:2, name:'Barcelona', flag:'🇪🇸' },
+  { r:3, name:'Spielberg', flag:'🇦🇹' },
+  { r:4, name:'Spa',       flag:'🇧🇪' },
+  { r:5, name:'Budapest',  flag:'🇭🇺' },
+  { r:6, name:'Zandvoort A', flag:'🇳🇱' },
+  { r:7, name:'Zandvoort B', flag:'🇳🇱' },
+  { r:8, name:'Monza',     flag:'🇮🇹' },
+];
+const RR_LS_KEY = 'supercup2026_rr';
+let currentRace = 1;
 
-function loadPts() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
+function loadRR() {
+  try { return JSON.parse(localStorage.getItem(RR_LS_KEY)) || {}; } catch { return {}; }
 }
-function savePts(pts) {
-  localStorage.setItem(LS_KEY, JSON.stringify(pts));
+function saveRR(d) { localStorage.setItem(RR_LS_KEY, JSON.stringify(d)); }
+
+function initResults() {
+  renderRacePills();
+  renderRaceEntry();
+  renderStandings();
 }
 
-function getTotal(id, pts) {
-  let t = 0;
-  for (let r = 1; r <= ROUNDS; r++) t += (pts[`${id}_r${r}`] || 0);
-  return t;
-}
-
-function renderStandings() {
-  const pts = loadPts();
-  const drivers = DRIVERS.map(d => ({ ...d, total: getTotal(d.num, pts) }));
-  drivers.sort((a, b) => b.total - a.total || a.num - b.num);
-
-  const tbody = document.getElementById('standings-body');
-  tbody.innerHTML = drivers.map((d, idx) => {
-    const pos = idx + 1;
-    const medal = pos === 1 ? 'pos-medal-1' : pos === 2 ? 'pos-medal-2' : pos === 3 ? 'pos-medal-3' : '';
-    const roundCells = Array.from({length: ROUNDS}, (_, i) => {
-      const r = i + 1;
-      const key = `${d.num}_r${r}`;
-      const val = pts[key] || '';
-      return `<td class="pts-cell" onclick="editCell(this,'${d.num}','${r}')">${val}</td>`;
-    }).join('');
-    return `<tr${d.clrt ? ' class="clrt-row"' : ''}>
-      <td class="${medal}">${pos}</td>
-      <td>#${d.num} ${d.name}</td>
-      <td>${d.team}</td>
-      ${roundCells}
-      <td class="pts-total">${d.total || ''}</td>
-    </tr>`;
+function renderRacePills() {
+  const data = loadRR();
+  document.getElementById('rr-race-pills').innerHTML = RACES_META.map(rm => {
+    const done = (data[rm.r] || []).some(n => n);
+    return `<button class="rr-pill${currentRace === rm.r ? ' active' : ''}" onclick="selectRace(${rm.r})">
+      ${rm.flag} R${rm.r}${done ? '<span class="rr-done">✓</span>' : ''}
+    </button>`;
   }).join('');
 }
 
-function editCell(td, driverNum, round) {
-  if (td.querySelector('input')) return;
-  const current = td.textContent.trim();
-  td.innerHTML = `<input type="number" min="0" max="25" value="${current}" autofocus>`;
-  const inp = td.querySelector('input');
-  inp.focus();
-  inp.select();
-  function save() {
-    const v = parseInt(inp.value) || 0;
-    const pts = loadPts();
-    if (v > 0) pts[`${driverNum}_r${round}`] = v;
-    else delete pts[`${driverNum}_r${round}`];
-    savePts(pts);
-    renderStandings();
+function selectRace(r) {
+  currentRace = r;
+  renderRacePills();
+  renderRaceEntry();
+}
+
+function renderRaceEntry() {
+  const saved = loadRR()[currentRace] || [];
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('rr-positions').innerHTML = RACE_PTS.map((pts, i) => {
+    const pos = i + 1;
+    const savedNum = saved[i] || '';
+    const label = medals[i] || `P${pos}`;
+    const cls = i < 3 ? ['p1','p2','p3'][i] : '';
+    const opts = DRIVERS.map(d =>
+      `<option value="${d.num}"${savedNum == d.num ? ' selected' : ''}>#${d.num} ${d.name}</option>`
+    ).join('');
+    return `<div class="rr-row">
+      <div class="rr-pos ${cls}">${label}</div>
+      <select class="rr-select${savedNum ? ' filled' : ''}" id="rr-sel-${pos}" onchange="this.classList.toggle('filled',this.value!='')">
+        <option value="">– Driver –</option>${opts}
+      </select>
+      <div class="rr-pts">+${pts}</div>
+    </div>`;
+  }).join('');
+}
+
+function saveRaceResult() {
+  const data = loadRR();
+  data[currentRace] = RACE_PTS.map((_, i) => {
+    const sel = document.getElementById(`rr-sel-${i+1}`);
+    return sel ? (parseInt(sel.value) || null) : null;
+  });
+  saveRR(data);
+  renderRacePills();
+  renderStandings();
+  const btn = document.querySelector('.rr-save-btn');
+  const orig = btn.textContent;
+  btn.textContent = '✓ Saved!';
+  btn.style.background = '#4caf50';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
+}
+
+function clearRaceResult() {
+  if (!confirm(`Reset result for R${currentRace} ${RACES_META[currentRace-1].name}?`)) return;
+  const data = loadRR();
+  delete data[currentRace];
+  saveRR(data);
+  renderRacePills();
+  renderRaceEntry();
+  renderStandings();
+}
+
+function renderStandings() {
+  const data = loadRR();
+  const totals = {};
+  for (const r in data) {
+    (data[r] || []).forEach((num, i) => {
+      if (!num) return;
+      totals[num] = (totals[num] || 0) + (RACE_PTS[i] || 0);
+    });
   }
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { save(); } if (e.key === 'Escape') renderStandings(); });
-  inp.addEventListener('blur', save);
+  const el = document.getElementById('standings-display');
+  if (!el) return;
+  if (!Object.keys(totals).length) {
+    el.innerHTML = '<div class="std-empty">No results yet — enter finishing order above after each race.</div>';
+    return;
+  }
+  const ranked = DRIVERS
+    .map(d => ({ ...d, total: totals[d.num] || 0 }))
+    .filter(d => d.total > 0)
+    .sort((a, b) => b.total - a.total || a.num - b.num)
+    .slice(0, 10);
+  const maxPts = ranked[0]?.total || 1;
+  const medals = ['🥇','🥈','🥉'];
+  el.innerHTML = ranked.map((d, idx) => {
+    const label = medals[idx] || (idx + 1);
+    const barW = Math.round((d.total / maxPts) * 56);
+    return `<div class="std-row">
+      <div class="std-pos ${idx < 3 ? ['p1','p2','p3'][idx] : ''}">${label}</div>
+      <div style="flex:1">
+        <div class="std-name${d.clrt ? ' clrt' : ''}">${d.name}</div>
+        <div class="std-team">${d.team}</div>
+      </div>
+      <div class="std-bar-wrap"><div class="std-bar" style="width:${barW}px"></div></div>
+      <div class="std-pts">${d.total}</div>
+    </div>`;
+  }).join('');
 }
 
 // ── LIGHTBOX ──
@@ -2511,7 +2603,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 loadWeather();
 loadWeatherAll();
-renderStandings();
+initResults();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
 
