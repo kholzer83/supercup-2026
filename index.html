@@ -924,21 +924,6 @@
   .race-day-badge.raceday    { background: #1a1a1a; color: #fff; }
 
   /* ── SESSION COUNTDOWN ── */
-  #session-cd {
-    background: #f8f6f2;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin: 10px 0;
-    display: none;
-    align-items: center;
-    gap: 12px;
-  }
-  #session-cd.visible { display: flex; }
-  .scd-left { flex: 1; }
-  .scd-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
-  .scd-digits { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); letter-spacing: -0.5px; }
-  .scd-name { font-size: 11px; color: var(--accent); margin-top: 2px; }
-  .scd-live-badge { background: #e53935; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; white-space: nowrap; animation: pulse-live 1.2s ease-in-out infinite; }
   @keyframes pulse-live { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
 
   /* ── ALL-RACE WEATHER ── */
@@ -981,25 +966,30 @@
 <!-- ═══════════════ TAB 1: SAISON ═══════════════ -->
 <section id="tab-saison" class="tab-content active">
 
-  <!-- TODAY CARD (only on race weekend days) -->
+  <!-- SESSION COUNTDOWN CARD (prominent, race weekend only) -->
+  <div id="session-cd-card" style="display:none;border-radius:12px;padding:20px 16px;margin-bottom:12px;background:#1a1a1a;color:#fff;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:0;"></div>
+    <div style="position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <div id="scd-badge" style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#aaa;"></div>
+        <div id="heute-live" style="display:none;background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:0.5px;animation:pulse-live 1.2s ease-in-out infinite;">● LIVE</div>
+      </div>
+      <div id="scd-name" style="font-size:14px;font-weight:600;margin-bottom:10px;"></div>
+      <div id="scd-digits" style="font-size:48px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-2px;line-height:1;"></div>
+      <div id="scd-sublabel" style="font-size:11px;color:#888;margin-top:6px;"></div>
+    </div>
+  </div>
+
+  <!-- TODAY CARD (schedule list, race weekend only) -->
   <div id="heute-card" style="display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <div>
         <div id="heute-title" style="font-size:15px;font-weight:600;"></div>
         <div id="heute-sub" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
         <div id="race-day-badge"></div>
       </div>
-      <div id="heute-live" style="display:none;background:#1a1a1a;color:#fff;font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;letter-spacing:0.5px;">LIVE</div>
-    </div>
-    <div id="session-cd">
-      <div class="scd-left">
-        <div class="scd-label" id="scd-label">Next Supercup session</div>
-        <div class="scd-digits" id="scd-digits">00:00:00</div>
-        <div class="scd-name" id="scd-name"></div>
-      </div>
     </div>
     <div id="heute-sessions"></div>
-    <div id="heute-next" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--accent);display:none;"></div>
   </div>
 
   <!-- COUNTDOWN + WEATHER -->
@@ -1017,6 +1007,11 @@
     </div>
     <div id="weather-container">
       <div class="weather-loading" id="weather-loading">Loading weather…</div>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid #333;position:relative;z-index:1;">
+      <a id="radar-link" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:500;padding:7px 12px;border-radius:8px;text-decoration:none;">
+        🌧 Rain Radar
+      </a>
     </div>
   </div>
 
@@ -2039,49 +2034,62 @@ function renderHeute() {
   document.getElementById('heute-live').style.display = anyRunning ? 'block' : 'none';
 }
 
-// ── SESSION COUNTDOWN (runs every second) ──
+// ── SESSION COUNTDOWN (runs every second, drives prominent card) ──
 function renderSessionCountdown() {
   const key = todayKey();
   const prog = HEUTE_PROGRAM[key];
-  const cdEl = document.getElementById('session-cd');
-  if (!prog) { cdEl.classList.remove('visible'); return; }
+  const card = document.getElementById('session-cd-card');
+  const liveEl = document.getElementById('heute-live');
 
-  // Only show countdown for Supercup Qualifying or Race
-  const targetSessions = prog.sessions.filter(s =>
-    s.type === 'supercup' && (s.label.toLowerCase().includes('qualifying') || s.label.toLowerCase().includes('rennen'))
-  );
-  if (targetSessions.length === 0) { cdEl.classList.remove('visible'); return; }
+  if (!prog) { card.style.display = 'none'; if (liveEl) liveEl.style.display = 'none'; return; }
+
+  // All supercup sessions
+  const allSC = prog.sessions.filter(s => s.type === 'supercup');
+  if (allSC.length === 0) { card.style.display = 'none'; return; }
 
   const now = new Date();
   const nowSecs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+  const fmt = n => String(n).padStart(2, '0');
 
-  // Check if any target session is currently running
-  for (const s of targetSessions) {
-    const startSec = timeToMins(s.time) * 60;
-    const endSec   = timeToMins(s.end) * 60;
-    if (nowSecs >= startSec && nowSecs < endSec) {
-      cdEl.classList.add('visible');
-      document.getElementById('scd-label').textContent = 'Session live now';
-      document.getElementById('scd-digits').innerHTML = '<span class="scd-live-badge">🔴 LIVE</span>';
-      document.getElementById('scd-name').textContent = s.label;
-      return;
-    }
+  // Check if any supercup session is running
+  const running = allSC.find(s => {
+    const start = timeToMins(s.time) * 60;
+    const end   = timeToMins(s.end) * 60;
+    return nowSecs >= start && nowSecs < end;
+  });
+
+  if (running) {
+    card.style.display = 'block';
+    if (liveEl) liveEl.style.display = 'block';
+    document.getElementById('scd-badge').textContent = '🔴 On track now';
+    document.getElementById('scd-name').textContent = running.label;
+    const endSec = timeToMins(running.end) * 60;
+    const rem = Math.max(0, endSec - nowSecs);
+    const mm = Math.floor(rem / 60), ss = rem % 60;
+    document.getElementById('scd-digits').textContent = `${fmt(mm)}:${fmt(ss)}`;
+    document.getElementById('scd-sublabel').textContent = `Ends at ${running.end}`;
+    return;
   }
 
-  // Find next upcoming target session
-  const next = targetSessions.find(s => timeToMins(s.time) * 60 > nowSecs);
-  if (!next) { cdEl.classList.remove('visible'); return; }
+  if (liveEl) liveEl.style.display = 'none';
+
+  // Find next upcoming supercup session
+  const next = allSC.find(s => timeToMins(s.time) * 60 > nowSecs);
+  if (!next) { card.style.display = 'none'; return; }
 
   const diffSec = timeToMins(next.time) * 60 - nowSecs;
   const hh = Math.floor(diffSec / 3600);
   const mm = Math.floor((diffSec % 3600) / 60);
   const ss = diffSec % 60;
-  const fmt = n => String(n).padStart(2, '0');
 
-  cdEl.classList.add('visible');
-  document.getElementById('scd-label').textContent = 'Next Supercup session in';
+  const lbl = next.label.toLowerCase();
+  const dayType = lbl.includes('rennen') ? '🏆 Race Day' : lbl.includes('qualifying') ? '🎯 Qualifying' : '🔧 Practice';
+
+  card.style.display = 'block';
+  document.getElementById('scd-badge').textContent = dayType;
+  document.getElementById('scd-name').textContent = next.label;
   document.getElementById('scd-digits').textContent = `${fmt(hh)}:${fmt(mm)}:${fmt(ss)}`;
-  document.getElementById('scd-name').textContent = next.label + ' · starts ' + next.time;
+  document.getElementById('scd-sublabel').textContent = `Starts at ${next.time}`;
 }
 
 // ── LEAFLET MAP ──
@@ -2170,6 +2178,12 @@ function updateCountdown() {
   if (next && card && !card.dataset.trackSet) {
     card.style.backgroundImage = `url('${next.track}')`;
     card.dataset.trackSet = '1';
+    // Set radar link to next race location
+    const radarLink = document.getElementById('radar-link');
+    if (radarLink) radarLink.href = `https://www.windy.com/?rain,${next.lat},${next.lon},11`;
+    // Set session-cd-card background too
+    const scdCard = document.getElementById('session-cd-card');
+    if (scdCard) { scdCard.style.backgroundImage = `url('${next.track}')`; scdCard.style.backgroundSize = 'cover'; scdCard.style.backgroundPosition = 'center'; }
   }
   if (!next) {
     document.getElementById('cd-race-name').textContent = 'Season 2026 finished';
