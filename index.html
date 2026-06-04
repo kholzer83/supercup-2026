@@ -916,11 +916,6 @@
   .pack-item-label { font-size: 13px; flex: 1; transition: color 0.15s; }
   .pack-item.checked .pack-item-label { text-decoration: line-through; color: var(--muted); }
   .pack-reset-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 11px; cursor: pointer; color: var(--accent); font-family: 'Inter', sans-serif; }
-  .notes-wkd-select { width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px; margin-bottom: 10px; background: #fff; }
-  .notes-textarea { width: 100%; min-height: 150px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.6; resize: vertical; background: #fff; }
-  .notes-textarea:focus { outline: none; border-color: #1a1a1a; }
-  .notes-saved { font-size: 11px; color: #4caf50; margin-top: 5px; opacity: 0; transition: opacity 0.4s; height: 16px; }
-  .notes-saved.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -1727,25 +1722,6 @@
 
 </section>
 
-<!-- ═══════════════ TAB 6: NOTES ═══════════════ -->
-<section id="tab-planner" class="tab-content">
-
-  <!-- PERSONAL NOTES -->
-  <div class="card">
-    <h2>📝 My Notes</h2>
-    <select class="notes-wkd-select" id="notes-wkd-select" onchange="switchNotesWeekend(this.value)">
-      <option value="barcelona">🇪🇸 Barcelona</option>
-      <option value="spielberg">🇦🇹 Spielberg</option>
-      <option value="budapest">🇭🇺 Budapest</option>
-      <option value="zandvoort">🇳🇱 Zandvoort</option>
-      <option value="monza">🇮🇹 Monza</option>
-    </select>
-    <textarea class="notes-textarea" id="notes-textarea" placeholder="Notes, ideas, things to remember…" oninput="saveNote()"></textarea>
-    <div class="notes-saved" id="notes-saved">✓ Saved</div>
-  </div>
-
-</section>
-
 <!-- ═══════════════ BOTTOM NAV ═══════════════ -->
 <nav class="bottom-nav">
   <button onclick="showTab('saison')" id="nav-saison" class="active">
@@ -1762,9 +1738,6 @@
   </button>
   <button onclick="showTab('ergebnisse')" id="nav-ergebnisse">
     <span class="icon">📊</span><span>Results</span>
-  </button>
-  <button onclick="showTab('planner')" id="nav-planner">
-    <span class="icon">📝</span><span>Notes</span>
   </button>
 </nav>
 
@@ -2527,36 +2500,6 @@ function closeGridPicker() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGridPicker(); });
 
-// ── PERSONAL NOTES ──
-let currentNotesWkd = 'barcelona';
-
-function loadNote(wid) {
-  return localStorage.getItem('supercup2026_notes_' + wid) || '';
-}
-function saveNote() {
-  const wid = currentNotesWkd;
-  const val = document.getElementById('notes-textarea').value;
-  localStorage.setItem('supercup2026_notes_' + wid, val);
-  const saved = document.getElementById('notes-saved');
-  saved.classList.add('show');
-  clearTimeout(saved._t);
-  saved._t = setTimeout(() => saved.classList.remove('show'), 1500);
-}
-function switchNotesWeekend(wid) {
-  currentNotesWkd = wid;
-  document.getElementById('notes-textarea').value = loadNote(wid);
-}
-function initNotes() {
-  // Pre-select next attended race
-  const now = Date.now();
-  const attended = races.filter(r => r.weekend && ATTENDED_WKNDS.has(r.weekend));
-  const next = attended.find(r => new Date(r.raceDate).getTime() > now) || attended[attended.length - 1];
-  if (next && next.weekend) {
-    currentNotesWkd = next.weekend;
-    document.getElementById('notes-wkd-select').value = next.weekend;
-  }
-  document.getElementById('notes-textarea').value = loadNote(currentNotesWkd);
-}
 
 // ── INIT ──
 renderHeute();
@@ -2571,7 +2514,6 @@ loadWeatherAll();
 renderStandings();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
-initNotes();
 
 // Default weekend = next attended race
 (function() {
