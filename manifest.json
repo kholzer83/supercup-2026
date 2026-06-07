@@ -1,0 +1,25 @@
+{
+  "name": "Porsche Supercup 2026",
+  "short_name": "Supercup 26",
+  "description": "Karin's Porsche Mobil 1 Supercup 2026 race companion",
+  "start_url": "/supercup-2026/",
+  "scope": "/supercup-2026/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F6F2",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "img/app-icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/app-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
