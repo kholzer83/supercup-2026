@@ -2662,6 +2662,16 @@ initResults();
 initPhotoClicks();
 ['barcelona','spielberg','budapest','zandvoort','monza'].forEach(renderGrid);
 
+// Seed R1 Monaco result (from official PDF, entered automatically)
+(function() {
+  const data = loadRR();
+  if (!data[1]) {
+    // P1–P10: Oeverhaus, Bristot, Burton, de Haan, Schuring, Masters, van Lagen, Schouten, Ferreira, Kieffer
+    data[1] = [15, 7, 26, 1, 12, 4, 17, 22, 27, 11];
+    saveRR(data);
+  }
+})();
+
 // Default weekend = next attended race
 (function() {
   const now = Date.now();
