@@ -40,43 +40,55 @@
   header {
     border-bottom: 1px solid var(--border);
     background: var(--bg);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: relative;
     overflow: hidden;
   }
   .header-car {
     position: relative;
-    height: 110px;
+    height: 160px;
     overflow: hidden;
   }
   .header-car img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 50%;
+    object-position: center 65%;
     display: block;
   }
   .header-car-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(248,246,242,0.88) 0%, rgba(248,246,242,0.35) 55%, transparent 100%);
+    background: linear-gradient(to bottom, rgba(248,246,242,0.7) 0%, rgba(248,246,242,0.1) 40%, rgba(0,0,0,0.35) 100%);
   }
   .header-car-text {
     position: absolute;
     left: 16px;
-    top: 16px;
+    top: 14px;
   }
   .header-car-text h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
   .header-car-text p { display: none; }
+  /* Header countdown — bottom of header image */
+  #header-countdown {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    border-radius: 10px;
+    padding: 6px 12px;
+    color: #fff;
+    text-align: right;
+  }
+  #header-countdown .hcd-label { font-size: 9px; color: #bbb; letter-spacing: 0.5px; text-transform: uppercase; }
+  #header-countdown .hcd-race { font-size: 11px; font-weight: 600; margin: 1px 0; }
+  #header-countdown .hcd-time { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; line-height: 1; }
   @media (min-width: 480px) {
-    .header-car { height: 140px; }
-    .header-car-text h1 { font-size: 18px; }
+    .header-car { height: 190px; }
   }
 
   /* ── DESKTOP LAYOUT ── */
   @media (min-width: 600px) {
-    header .header-car { height: 160px; }
+    header .header-car { height: 220px; }
     header .header-car-text h1 { font-size: 24px; }
     .tab-content {
       max-width: 680px;
@@ -964,7 +976,11 @@
     <div class="header-car-overlay"></div>
     <div class="header-car-text">
       <h1>Porsche Mobil 1 Supercup 2026</h1>
-      <p>34th Season · 911 Cup 992.2</p>
+    </div>
+    <div id="header-countdown">
+      <div class="hcd-label">Next Race</div>
+      <div class="hcd-race" id="hcd-race">–</div>
+      <div class="hcd-time" id="hcd-time">–</div>
     </div>
   </div>
 </header>
@@ -2194,6 +2210,10 @@ function updateCountdown() {
   if (!next) {
     document.getElementById('cd-race-name').textContent = 'Season 2026 finished';
     document.getElementById('cd-digits').innerHTML = '<div class="countdown-done">Until next year! 🏆</div>';
+    const hcdRace = document.getElementById('hcd-race');
+    const hcdTime = document.getElementById('hcd-time');
+    if (hcdRace) hcdRace.textContent = 'Season finished';
+    if (hcdTime) hcdTime.textContent = '🏆';
     return;
   }
   document.getElementById('cd-race-name').textContent = `${next.flag} ${next.name}`;
@@ -2206,6 +2226,11 @@ function updateCountdown() {
   document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
   document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
   document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+  // Update header mini countdown
+  const hcdRace = document.getElementById('hcd-race');
+  const hcdTime = document.getElementById('hcd-time');
+  if (hcdRace) hcdRace.textContent = `${next.flag} ${next.name}`;
+  if (hcdTime) hcdTime.textContent = d > 0 ? `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m` : `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
 // ── WEATHER (Open-Meteo, free, no key) ──
