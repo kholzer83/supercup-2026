@@ -2364,6 +2364,7 @@ const DRIVERS = [
   { num: 5,  name: 'Kai Pfister',        team: 'Proton' },
   { num: 7,  name: 'Andrea Bristot',     team: 'Dinamic' },
   { num: 8,  name: 'William Mezzetti',   team: 'Dinamic' },
+  { num: 9,  name: 'Alexander Tauscher', team: 'Proton' },
   { num: 11, name: 'Chester Kieffer',    team: 'CLRT', clrt: true },
   { num: 12, name: 'Flynt Schuring',     team: 'CLRT', clrt: true },
   { num: 13, name: 'Jorge Ramírez',      team: 'RGB' },
@@ -2374,6 +2375,7 @@ const DRIVERS = [
   { num: 18, name: 'Liam McNeilly',      team: 'Ombra' },
   { num: 19, name: 'L.F. Martinez',      team: 'Ombra' },
   { num: 20, name: 'Filip Ugran',        team: 'Ombra' },
+  { num: 21, name: 'Jukka Honkavuori',   team: 'Looping' },
   { num: 22, name: 'Dirk Schouten',      team: 'Looping' },
   { num: 23, name: 'Samer Shahin',       team: 'GP Elite' },
   { num: 24, name: 'Jonas Grief',        team: 'GP Elite' },
@@ -2704,6 +2706,11 @@ if ('serviceWorker' in navigator) {
   if (!data[1]) {
     // P1–P10: Oeverhaus, Bristot, Burton, de Haan, Schuring, Masters, van Lagen, Schouten, Ferreira, Kieffer
     data[1] = [15, 7, 26, 1, 12, 4, 17, 22, 27, 11];
+    saveRR(data);
+  }
+  if (!data[2]) {
+    // Barcelona R2 P1–P10: Schuring, Cauhaupé, Oeverhaus, Amand, Masters, Schouten, Boerekamps, Kieffer, Tauscher, Bristot
+    data[2] = [12, 16, 15, 2, 4, 22, 25, 11, 9, 7];
     saveRR(data);
   }
 })();
