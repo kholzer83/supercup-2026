@@ -1814,18 +1814,6 @@
 </nav>
 
 <!-- GRID PICKER -->
-<div id="grid-picker" onclick="if(event.target===this)closeGridPicker()">
-  <div id="grid-picker-inner">
-    <div class="gp-header">
-      <h3 id="gp-pos-label">Fahrer wählen</h3>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="gp-clear" onclick="clearGridSlot(gridPickerCtx.wid, gridPickerCtx.pos)">Clear</button>
-        <button class="gp-close" onclick="closeGridPicker()">✕</button>
-      </div>
-    </div>
-    <div id="gp-driver-list"></div>
-  </div>
-</div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox(event)">
@@ -2528,9 +2516,9 @@ function renderGrid(wid) {
       : '';
     const infoHtml = driver
       ? `<div class="gs-info"><div class="gs-num">#${driver.num}</div><div class="gs-name">${driver.name}</div><div class="gs-team">${driver.team}</div></div>`
-      : `<div class="gs-empty-label">P${pos} – tap to assign</div>`;
+      : `<div class="gs-empty-label">P${pos}</div>`;
 
-    slots += `<div class="${cls}" data-pos="${pos}" onclick="openGridPicker('${wid}',${pos})">
+    slots += `<div class="${cls}" data-pos="${pos}">
       <div class="gs-pos">${pos}</div>
       ${avatarHtml}
       ${infoHtml}
@@ -2539,69 +2527,10 @@ function renderGrid(wid) {
   }
 
   container.innerHTML = `
-    <h2>Starting Grid <button class="grid-edit-btn" onclick="event.stopPropagation();clearGrid('${wid}')">Reset</button></h2>
-    <div class="grid-meta">Tap a position to assign a driver · saved locally</div>
+    <h2>Starting Grid</h2>
     <div class="startgitter">${slots}</div>`;
 }
 
-function openGridPicker(wid, pos) {
-  gridPickerCtx = { wid, pos };
-  const data = loadGrid(wid);
-  const assigned = new Set(Object.entries(data).filter(([p]) => Number(p) !== pos).map(([,n]) => Number(n)));
-  const current = data[pos] ? Number(data[pos]) : null;
-
-  document.getElementById('gp-pos-label').textContent = `Position ${pos}${pos === 1 ? ' – Pole Position 🏆' : ''}`;
-
-  document.getElementById('gp-driver-list').innerHTML = DRIVERS.map(d => {
-    const photo = DRIVER_PHOTOS[d.num];
-    const taken = assigned.has(d.num);
-    const isCurrent = d.num === current;
-    const avatarHtml = photo
-      ? `<img src="${photo}" alt="${d.name}" onerror="this.style.display='none'">`
-      : `<div style="width:40px;height:40px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#888">${initials(d.name)}</div>`;
-    return `<div class="gp-driver${isCurrent ? ' gp-current' : ''}" style="${taken ? 'opacity:0.4;' : ''}" onclick="assignToGrid('${wid}',${pos},${d.num})">
-      ${avatarHtml}
-      <div class="gp-driver-info">
-        <div class="gp-num">#${d.num}</div>
-        <div class="gp-name">${d.name}</div>
-        <div class="gp-team">${d.team}</div>
-      </div>
-      ${isCurrent ? '<div class="gp-assigned">✓ assigned</div>' : taken ? '<div class="gp-assigned">taken</div>' : ''}
-    </div>`;
-  }).join('');
-
-  document.getElementById('grid-picker').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function assignToGrid(wid, pos, driverNum) {
-  const data = loadGrid(wid);
-  for (const p in data) { if (Number(data[p]) === driverNum) delete data[p]; }
-  data[pos] = driverNum;
-  saveGrid(wid, data);
-  closeGridPicker();
-  renderGrid(wid);
-}
-
-function clearGridSlot(wid, pos) {
-  const data = loadGrid(wid);
-  delete data[pos];
-  saveGrid(wid, data);
-  closeGridPicker();
-  renderGrid(wid);
-}
-
-function clearGrid(wid) {
-  if (!confirm('Reset starting grid for this weekend?')) return;
-  localStorage.removeItem('supercup2026_grid_' + wid);
-  renderGrid(wid);
-}
-
-function closeGridPicker() {
-  document.getElementById('grid-picker').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGridPicker(); });
 
 
 // ── INIT ──
