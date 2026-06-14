@@ -1783,18 +1783,6 @@
     </div>
   </div>
 
-  <!-- RACE RESULT ENTRY -->
-  <div class="card">
-    <h2>Enter Race Result</h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Select race → pick finishing order → Save. Points calculated automatically.</p>
-    <div class="rr-race-pills" id="rr-race-pills"></div>
-    <div id="rr-positions"></div>
-    <div style="display:flex;gap:8px;margin-top:14px;">
-      <button class="rr-save-btn" onclick="saveRaceResult()">✓ Save Result</button>
-      <button class="rr-clear-btn" onclick="clearRaceResult()">Reset</button>
-    </div>
-  </div>
-
   <!-- CHAMPIONSHIP STANDINGS -->
   <div class="card">
     <h2>Championship Standings 2026</h2>
@@ -2406,71 +2394,6 @@ function loadRR() {
 function saveRR(d) { localStorage.setItem(RR_LS_KEY, JSON.stringify(d)); }
 
 function initResults() {
-  renderRacePills();
-  renderRaceEntry();
-  renderStandings();
-}
-
-function renderRacePills() {
-  const data = loadRR();
-  document.getElementById('rr-race-pills').innerHTML = RACES_META.map(rm => {
-    const done = (data[rm.r] || []).some(n => n);
-    return `<button class="rr-pill${currentRace === rm.r ? ' active' : ''}" onclick="selectRace(${rm.r})">
-      ${rm.flag} R${rm.r}${done ? '<span class="rr-done">✓</span>' : ''}
-    </button>`;
-  }).join('');
-}
-
-function selectRace(r) {
-  currentRace = r;
-  renderRacePills();
-  renderRaceEntry();
-}
-
-function renderRaceEntry() {
-  const saved = loadRR()[currentRace] || [];
-  const medals = ['🥇','🥈','🥉'];
-  document.getElementById('rr-positions').innerHTML = RACE_PTS.map((pts, i) => {
-    const pos = i + 1;
-    const savedNum = saved[i] || '';
-    const label = medals[i] || `P${pos}`;
-    const cls = i < 3 ? ['p1','p2','p3'][i] : '';
-    const opts = DRIVERS.map(d =>
-      `<option value="${d.num}"${savedNum == d.num ? ' selected' : ''}>#${d.num} ${d.name}</option>`
-    ).join('');
-    return `<div class="rr-row">
-      <div class="rr-pos ${cls}">${label}</div>
-      <select class="rr-select${savedNum ? ' filled' : ''}" id="rr-sel-${pos}" onchange="this.classList.toggle('filled',this.value!='')">
-        <option value="">– Driver –</option>${opts}
-      </select>
-      <div class="rr-pts">+${pts}</div>
-    </div>`;
-  }).join('');
-}
-
-function saveRaceResult() {
-  const data = loadRR();
-  data[currentRace] = RACE_PTS.map((_, i) => {
-    const sel = document.getElementById(`rr-sel-${i+1}`);
-    return sel ? (parseInt(sel.value) || null) : null;
-  });
-  saveRR(data);
-  renderRacePills();
-  renderStandings();
-  const btn = document.querySelector('.rr-save-btn');
-  const orig = btn.textContent;
-  btn.textContent = '✓ Saved!';
-  btn.style.background = '#4caf50';
-  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1500);
-}
-
-function clearRaceResult() {
-  if (!confirm(`Reset result for R${currentRace} ${RACES_META[currentRace-1].name}?`)) return;
-  const data = loadRR();
-  delete data[currentRace];
-  saveRR(data);
-  renderRacePills();
-  renderRaceEntry();
   renderStandings();
 }
 
@@ -2486,7 +2409,7 @@ function renderStandings() {
   const el = document.getElementById('standings-display');
   if (!el) return;
   if (!Object.keys(totals).length) {
-    el.innerHTML = '<div class="std-empty">No results yet — enter finishing order above after each race.</div>';
+    el.innerHTML = '<div class="std-empty">No results yet.</div>';
     return;
   }
   const ranked = DRIVERS
