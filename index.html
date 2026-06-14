@@ -945,6 +945,23 @@
   @keyframes pulse-live { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
 
   /* ── ALL-RACE WEATHER ── */
+  /* CLRT focus card */
+  .clrt-header { background: #1a1a1a; color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .clrt-header-logo { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+  .clrt-header-sub { font-size: 11px; color: #888; margin-top: 1px; }
+  .clrt-drivers { display: grid; grid-template-columns: 1fr 1fr; }
+  .clrt-driver { padding: 14px 16px; border-top: 1px solid var(--border); }
+  .clrt-driver:first-child { border-right: 1px solid var(--border); }
+  .clrt-driver-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .clrt-num { font-size: 20px; font-weight: 800; color: #1a1a1a; line-height: 1; }
+  .clrt-dname { font-size: 12px; font-weight: 600; line-height: 1.3; }
+  .clrt-dteam { font-size: 10px; color: var(--muted); }
+  .clrt-stat { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .clrt-stat-label { font-size: 10px; color: var(--muted); }
+  .clrt-stat-val { font-size: 13px; font-weight: 700; }
+  .clrt-stat-val.leader { color: #c9a84c; }
+  .clrt-gap { font-size: 10px; color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); text-align: center; }
+  .clrt-last { font-size: 10px; color: var(--muted); margin-top: 2px; text-align: center; }
   .aw-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
   .aw-card h2 { font-size: 14px; font-weight: 600; margin-bottom: 14px; }
   .aw-race { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0ede8; }
@@ -1036,6 +1053,9 @@
       </a>
     </div>
   </div>
+
+  <!-- CLRT FOCUS CARD -->
+  <div id="clrt-focus-card" class="card" style="padding:0;overflow:hidden;"></div>
 
   <!-- ALL-RACE WEATHER -->
   <div class="aw-card" id="all-weather-card" style="display:none;">
@@ -2383,6 +2403,81 @@ function saveRR(d) { localStorage.setItem(RR_LS_KEY, JSON.stringify(d)); }
 
 function initResults() {
   renderStandings();
+  renderCLRTCard();
+}
+
+function renderCLRTCard() {
+  const el = document.getElementById('clrt-focus-card');
+  if (!el) return;
+  const data = loadRR();
+
+  // Build totals + per-race results for all drivers
+  const totals = {};
+  const lastRace = {};
+  const raceNums = Object.keys(data).map(Number).sort((a,b) => a-b);
+  for (const r of raceNums) {
+    (data[r] || []).forEach((num, i) => {
+      if (!num) return;
+      totals[num] = (totals[num] || 0) + (RACE_PTS[i] || 0);
+      lastRace[num] = { r, pos: i + 1 };
+    });
+  }
+
+  // Full ranking to find positions
+  const ranked = DRIVERS
+    .map(d => ({ num: d.num, total: totals[d.num] || 0 }))
+    .filter(d => d.total > 0)
+    .sort((a, b) => b.total - a.total || a.num - b.num);
+
+  const leaderPts = ranked[0]?.total || 0;
+  const posOf = num => { const i = ranked.findIndex(d => d.num === num); return i >= 0 ? i + 1 : null; };
+
+  const clrtDrivers = [
+    { num: 12, name: 'Flynt Schuring',  shortName: 'Schuring' },
+    { num: 11, name: 'Chester Kieffer', shortName: 'Kieffer' },
+  ];
+
+  const ordinal = n => n === 1 ? '1st' : n === 2 ? '2nd' : n === 3 ? '3rd' : `${n}th`;
+  const medals = ['🥇','🥈','🥉'];
+
+  const driversHtml = clrtDrivers.map(cd => {
+    const pts = totals[cd.num] || 0;
+    const pos = posOf(cd.num);
+    const gap = pos && pos > 1 ? leaderPts - pts : 0;
+    const lr = lastRace[cd.num];
+    const isLeader = pos === 1;
+
+    const posHtml = pos
+      ? `<div class="clrt-stat"><span class="clrt-stat-label">Championship</span><span class="clrt-stat-val${isLeader ? ' leader' : ''}">${ordinal(pos)} ${isLeader ? '👑' : ''}</span></div>
+         <div class="clrt-stat"><span class="clrt-stat-label">Points</span><span class="clrt-stat-val">${pts}</span></div>`
+      : `<div class="clrt-stat"><span class="clrt-stat-label">Points</span><span class="clrt-stat-val">–</span></div>`;
+
+    const gapHtml = pos && pos > 1 ? `<div class="clrt-gap">–${gap} pts to leader</div>` :
+                    pos === 1      ? `<div class="clrt-gap" style="color:#c9a84c">Leading the championship</div>` : '';
+    const lastHtml = lr ? `<div class="clrt-last">Last: R${lr.r} → ${medals[lr.pos-1] || 'P'+lr.pos}</div>` : '';
+
+    return `<div class="clrt-driver">
+      <div class="clrt-driver-top">
+        <div class="clrt-num">#${cd.num}</div>
+        <div><div class="clrt-dname">${cd.name}</div><div class="clrt-dteam">Schumacher CLRT</div></div>
+      </div>
+      ${posHtml}
+      ${gapHtml}
+      ${lastHtml}
+    </div>`;
+  }).join('');
+
+  const racesPlayed = raceNums.length;
+  const totalRaces = 8;
+
+  el.innerHTML = `
+    <div class="clrt-header">
+      <div>
+        <div class="clrt-header-logo">Schumacher CLRT</div>
+        <div class="clrt-header-sub">After R${racesPlayed} of ${totalRaces} · 2026 Championship</div>
+      </div>
+    </div>
+    <div class="clrt-drivers">${driversHtml}</div>`;
 }
 
 function renderStandings() {
