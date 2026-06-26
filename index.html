@@ -1726,10 +1726,33 @@
         <div class="hosp-info-item"><div class="hi-label">Venue</div><div class="hi-val">Red Bull Ring</div></div>
         <div class="hosp-info-item"><div class="hi-label">Meeting point</div><div class="hi-val">CLRT hospitality unit, paddock</div></div>
         <div class="hosp-info-item"><div class="hi-label">Dress code</div><div class="hi-val">Smart casual</div></div>
-        <div class="hosp-info-item"><div class="hi-label">Parking</div><div class="hi-val">Details to follow</div></div>
+        <div class="hosp-info-item"><div class="hi-label">Shuttle</div><div class="hi-val">Support Race Parking ↔ Paddock</div></div>
       </div>
-      <h3 style="font-size:12px;font-weight:600;margin:14px 0 8px;">Meal Slots</h3>
-      <div class="hosp-note-box" style="text-align:center;color:var(--muted);">Details to follow</div>
+    </div>
+    <div class="card">
+      <h2>Freitag 26.06.</h2>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">09:00</div><div class="hosp-slot-time">–10:30</div><div class="hosp-slot-label">🍽 Breakfast (Porsche Hospitality)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">11:00</div><div class="hosp-slot-time"></div><div class="hosp-slot-label">Scrutineering #11 &amp; #12</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">12:00</div><div class="hosp-slot-time">–14:15</div><div class="hosp-slot-label">🍽 Lunch (Porsche Hospitality)</div></div>
+      <div class="hosp-slot-row" style="font-weight:600;color:var(--text)"><div class="hosp-slot-day">15:40</div><div class="hosp-slot-time">–16:10</div><div class="hosp-slot-label">🎯 Drivers' Briefing (Hospitality)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">16:15</div><div class="hosp-slot-time">–17:30</div><div class="hosp-slot-label">🍽 Afternoon Snack</div></div>
+      <div class="hosp-slot-row" style="font-weight:600;color:var(--text)"><div class="hosp-slot-day">18:35</div><div class="hosp-slot-time">–19:20</div><div class="hosp-slot-label">🏎 Free Practice</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">19:30</div><div class="hosp-slot-time">–21:40</div><div class="hosp-slot-label">🍽 Dinner (Porsche Hospitality)</div></div>
+    </div>
+    <div class="card">
+      <h2>Samstag 27.06.</h2>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">08:15</div><div class="hosp-slot-time">–10:00</div><div class="hosp-slot-label">🍽 Breakfast (Porsche Hospitality)</div></div>
+      <div class="hosp-slot-row" style="font-weight:600;color:var(--text)"><div class="hosp-slot-day">11:20</div><div class="hosp-slot-time">–11:50</div><div class="hosp-slot-label">🏎 Qualifying</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">12:00</div><div class="hosp-slot-time">–14:15</div><div class="hosp-slot-label">🍽 Lunch (Porsche Hospitality)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">14:00</div><div class="hosp-slot-time">–15:00</div><div class="hosp-slot-label">Meet the Legend – Albrecht Reimold (Rookie CK)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">16:00</div><div class="hosp-slot-time">–17:00</div><div class="hosp-slot-label">🍽 Afternoon Snack</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">18:00</div><div class="hosp-slot-time">–20:15</div><div class="hosp-slot-label">🍽 Dinner (Porsche Hospitality)</div></div>
+    </div>
+    <div class="card">
+      <h2>Sonntag 28.06.</h2>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">08:30</div><div class="hosp-slot-time">–10:05</div><div class="hosp-slot-label">🍽 Breakfast (Porsche Hospitality)</div></div>
+      <div class="hosp-slot-row" style="font-weight:600;color:var(--text)"><div class="hosp-slot-day">11:55</div><div class="hosp-slot-time">–12:30</div><div class="hosp-slot-label">🏎 Race (18 Laps / 30 min + 1)</div></div>
+      <div class="hosp-slot-row"><div class="hosp-slot-day">12:45</div><div class="hosp-slot-time">–13:45</div><div class="hosp-slot-label">🍽 Lunch (Porsche Hospitality)</div></div>
     </div>
   </div>
 
@@ -1838,7 +1861,7 @@
   <button onclick="showTab('wochenenden')" id="nav-wochenenden">
     <span class="icon">📅</span><span>Weekends</span>
   </button>
-  <button onclick="showTab('hospitality')" id="nav-hospitality">
+  <button onclick="showTab('hospitality');showHospWeekend('spielberg')" id="nav-hospitality">
     <span class="icon">🍽</span><span>Hospitality</span>
   </button>
   <button onclick="showTab('teams')" id="nav-teams">
