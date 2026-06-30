@@ -2699,6 +2699,11 @@ if ('serviceWorker' in navigator) {
     data[2] = [12, 16, 15, 2, 4, 22, 25, 11, 9, 7];
     saveRR(data);
   }
+  if (!data[3]) {
+    // Spielberg R3 P1–P10: de Haan, Schuring, Masters, Burton, Bristot, Oeverhaus, Kieffer, Schouten, Cauhaupé, Ferreira
+    data[3] = [1, 12, 4, 26, 7, 15, 11, 22, 16, 27];
+    saveRR(data);
+  }
 })();
 
 // Default weekend = next attended race
